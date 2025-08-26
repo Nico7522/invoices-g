@@ -1,0 +1,13 @@
+<form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+    <p-floatlabel>
+        <input email type="email" required pInputText id="email" autocomplete="true" [(ngModel)]="email" name="email" />
+        <label for="email">Mail</label>
+    </p-floatlabel>
+    <p-floatlabel>
+        <p-password #pwdModel="ngModel" required [minlength]="8" passwordValidator type="password"
+            [inputStyle]="{'width': '100%'}" [(ngModel)]="password" inputId="password" feedback="false"
+            toggleMask="true" name="password" />
+        <label for="password">Mot de passe</label>
+    </p-floatlabel>
+    <p-button [disabled]="loginForm.invalid" label="Login" type="submit" />
+</form>
