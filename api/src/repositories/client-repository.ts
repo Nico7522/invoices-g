@@ -7,6 +7,7 @@ import { Database } from "../types/database.types";
  */
 export const getClientsRepository = async () => {
   const { data, error } = await supabase.from("clients").select();
+
   if (error) throw new Error(error.message);
 
   return data;

@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './auth-service';
+import { AuthService } from './services/auth-service';
 import { Session } from './models/auth-interface';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -8,6 +8,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { PasswordModule } from 'primeng/password';
 import { PasswordDirective } from '../shared/directives/password-directive';
+import { pipe, take, tap } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-auth',
   imports: [
@@ -24,12 +26,16 @@ import { PasswordDirective } from '../shared/directives/password-directive';
 })
 export class Auth {
   readonly #authService = inject(AuthService);
+  readonly #router = inject(Router);
   email = signal('');
   password = signal('');
   login(loginForm: NgForm) {
-    console.log(loginForm.value);
-    this.#authService.login(loginForm.value.email, loginForm.value.password).subscribe((res) => {
-      console.log(res);
-    });
+    this.#authService
+      .login(loginForm.value.email, loginForm.value.password)
+      .pipe(
+        tap(() => this.#router.navigate(['/'])),
+        take(1)
+      )
+      .subscribe();
   }
 }

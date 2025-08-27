@@ -1,0 +1,9 @@
+@if (isLoggedIn()) {
+<header>
+    <p-menubar [model]="items()">
+        <ng-template #end>
+            <p-button size="small" type="button" label="Déconnexion" icon="pi pi-sign-out" (onClick)="logout()" />
+        </ng-template>
+    </p-menubar>
+</header>
+}
