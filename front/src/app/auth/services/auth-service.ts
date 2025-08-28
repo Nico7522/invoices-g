@@ -1,32 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-import { Session } from '../models/auth-interface';
-import { TokenService } from '../../shared/services/token/token-service';
+import { map, Observable, tap } from 'rxjs';
+import { UserInfo } from '../../shared/models/user-info';
+import { UserService } from '../../shared/services/user/user-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   readonly #httpClient = inject(HttpClient);
-  readonly #tokenService = inject(TokenService);
+  readonly #userService = inject(UserService);
   /**
    * Log in the user
    * @param email - The email of the user
    * @param password - The password of the user
-   * @returns A object with the session and the user
+   * @returns A object with the user info
    */
-  login(email: string, password: string): Observable<Session> {
-    return this.#httpClient.post<Session>('api/auth/login', { email, password }).pipe(
+  login(email: string, password: string): Observable<UserInfo> {
+    return this.#httpClient.post<{ user: UserInfo }>('api/auth/login', { email, password }).pipe(
       tap((response) => {
         console.log(response);
-
-        this.#tokenService.setToken(response.token.accessToken);
-      })
+      }),
+      map((response) => response.user)
     );
   }
 
   logout() {
-    // TODO: Implement logout
+    return this.#httpClient
+      .post('api/auth/logout', {})
+      .pipe(tap(() => this.#userService.userInfo.set(null)));
   }
 }

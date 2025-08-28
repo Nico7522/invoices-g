@@ -1,9 +1,19 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { TokenService } from '../services/token/token-service';
 import { inject } from '@angular/core';
+import { UserService } from '../services/user/user-service';
+import { catchError, EMPTY, map, of } from 'rxjs';
 
 export const loginGuard: CanActivateFn = (route, state) => {
-  const tokenService = inject(TokenService);
   const router = inject(Router);
-  return tokenService.token() ? true : router.navigate(['/auth/login']);
+  const userService = inject(UserService);
+  return userService.getUser().pipe(
+    map((user) => {
+      if (user) {
+        return true;
+      } else {
+        router.navigate(['/auth/login']);
+        return false;
+      }
+    })
+  );
 };

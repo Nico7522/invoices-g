@@ -1,9 +1,18 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { TokenService } from '../services/token/token-service';
 import { inject } from '@angular/core';
+import { UserService } from '../services/user/user-service';
+import { map } from 'rxjs';
 
 export const redirectGuard: CanActivateFn = (route, state) => {
-  const tokenService = inject(TokenService);
+  const userService = inject(UserService);
   const router = inject(Router);
-  return tokenService.isLoggedIn() ? router.navigate(['/']) : true;
+  return userService.getUser().pipe(
+    map((user) => {
+      if (user) {
+        return true;
+      } else {
+        return true;
+      }
+    })
+  );
 };

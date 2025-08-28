@@ -15,8 +15,6 @@ export class ClientService {
       {
         defaultValue: [] as Client[],
         parse: (response) => {
-          console.log(response);
-
           return this.#clientScema.parse((response as { data: Client[] }).data);
         },
       }

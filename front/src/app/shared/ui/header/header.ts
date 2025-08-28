@@ -4,7 +4,9 @@ import { Menubar } from 'primeng/menubar';
 import { AuthService } from '../../../auth/services/auth-service';
 import { Button } from 'primeng/button';
 import { CommonModule } from '@angular/common';
-import { TokenService } from '../../services/token/token-service';
+import { UserService } from '../../services/user/user-service';
+import { take, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +16,8 @@ import { TokenService } from '../../services/token/token-service';
 })
 export class Header {
   readonly #authService = inject(AuthService);
-  readonly #tokenService = inject(TokenService);
+  readonly #userService = inject(UserService);
+  readonly #router = inject(Router);
   items = signal<MenuItem[]>([
     {
       label: 'Accueil',
@@ -34,9 +37,17 @@ export class Header {
     },
   ]);
 
-  isLoggedIn = this.#tokenService.isLoggedIn;
+  isLoggedIn = this.#userService.userInfo;
 
   logout() {
-    this.#authService.logout();
+    this.#authService
+      .logout()
+      .pipe(
+        take(1),
+        tap(() => {
+          this.#router.navigate(['/auth/login']);
+        })
+      )
+      .subscribe();
   }
 }
