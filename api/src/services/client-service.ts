@@ -1,21 +1,25 @@
+import { getAuthClient } from "../config/supabase";
 import {
   clientModelToClient,
   clientToClienDto,
 } from "../mappers/client-mapper";
-import {
-  getClientByIdRepository,
-  getClientsRepository,
-  createClientRepository,
-} from "../repositories/client-repository";
+
 import { ClientModel } from "../types/client";
 
 /**
  * Returns all clients retrieved from the client repository
  * @returns Array of clients using the clientToClienDto mapper
  */
-export const getClientsService = async () => {
-  const clients = await getClientsRepository();
-  return clients.map(clientToClienDto);
+export const getClientsService = async (
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  const auth = await supabase.auth.getSession();
+  console.log(auth);
+
+  const { data, error } = await supabase.from("clients").select("*");
+  if (error) throw new Error(error.message);
+
+  return data.map(clientToClienDto);
 };
 
 /**
@@ -23,15 +27,29 @@ export const getClientsService = async () => {
  * @param id - The id of the client to return
  * @returns The client with the given id using the clientToClienDto mapper
  */
-export const getClientByIdService = async (id: string) => {
-  const client = await getClientByIdRepository(id);
-  return clientToClienDto(client);
+export const getClientByIdService = async (
+  id: string,
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  const { data, error } = await supabase
+    .from("clients")
+    .select()
+    .eq("id", id)
+    .single();
+  if (error) throw new Error(error.message);
+  return clientToClienDto(data);
 };
 
 /**
  * Map a client model to a client and call the createClientRepository
  * @param client - The client to create
  */
-export const createClientService = async (client: ClientModel) => {
-  await createClientRepository(clientModelToClient(client));
+export const createClientService = async (
+  client: ClientModel,
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  const { error } = await supabase
+    .from("clients")
+    .insert(clientModelToClient(client));
+  if (error) throw new Error(error.message);
 };

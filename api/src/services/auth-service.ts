@@ -1,5 +1,5 @@
+import supabase, { getAnonClient, getAuthClient } from "../config/supabase";
 import { authToSession } from "../mappers/auth-mapper";
-import { loginRepository } from "../repositories/auth-repository";
 
 /**
  * Call the loginRepository and return the user and the session
@@ -8,6 +8,26 @@ import { loginRepository } from "../repositories/auth-repository";
  * @returns The user, and the session
  */
 export const loginService = async (email: string, password: string) => {
-  const data = await loginRepository(email, password);
+  const { error, data } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) throw new Error(error.message);
   return authToSession(data);
+};
+
+export const logoutService = async (
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw new Error(error.message);
+};
+
+export const getUserService = async (accessToken: string) => {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser(accessToken);
+  if (error) throw new Error(error.message);
+  return { id: user?.id, email: user?.email };
 };
