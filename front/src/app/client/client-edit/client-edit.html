@@ -1,0 +1,18 @@
+<section class="client-form-container">
+    <div class="form-header">
+        <h1 class="form-title">
+            <i class="pi pi-user-edit"></i>
+            Édition Client
+        </h1>
+        <p class="form-subtitle">Modifiez les informations du client</p>
+    </div>
+
+    <form [formGroup]="clientEditForm" class="form" (ngSubmit)="onSubmit()">
+        <app-client-form controlKey="client" label="Client"></app-client-form>
+
+        <div class="form-actions">
+            <p-button type="button" label="Annuler" icon="pi pi-times" severity="secondary" />
+            <p-button type="submit" label="Enregistrer" icon="pi pi-check" [disabled]="clientEditForm.invalid" />
+        </div>
+    </form>
+</section>

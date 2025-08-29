@@ -1,184 +1,157 @@
-// Auth container - full viewport centering with dark theme
+// Auth container - full viewport centering
 .auth-container {
+  min-height: 100vh;
+  background: transparent;
+  padding: 2rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 2rem;
-  position: relative;
+}
 
-  // Background pattern with green accents
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
+// Form header - matching client-edit style
+.form-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: slideDown 0.5s ease;
+
+  .form-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background: linear-gradient(135deg, #4caf50, #81c784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(76, 175, 80, 0.3);
+
+    i {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #4caf50, #81c784);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  .form-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+    margin: 0;
+    letter-spacing: 0.5px;
   }
 }
 
-// Main auth card - dark theme
+// Auth card - glassmorphism effect
 .auth-card {
   width: 100%;
   max-width: 450px;
-  background: #1a1a1a;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(76, 175, 80, 0.2);
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3),
-    0 0 30px rgba(76, 175, 80, 0.1);
-  overflow: hidden;
-  position: relative;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(76, 175, 80, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.6s ease;
+  transition: all 0.3s ease;
 
-  // Green gradient accent top border
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
-  }
-}
-
-// Auth header section
-.auth-header {
-  text-align: center;
-  padding: 3rem 2rem 2rem;
-  background: linear-gradient(180deg, rgba(76, 175, 80, 0.05) 0%, transparent 100%);
-
-  .auth-icon {
-    width: 4rem;
-    height: 4rem;
-    background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
-    color: #1a1a1a;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 10px 25px -5px rgba(76, 175, 80, 0.3), 0 0 20px rgba(76, 175, 80, 0.2);
-  }
-
-  .auth-title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.025em;
-  }
-
-  .auth-subtitle {
-    color: #9e9e9e;
-    font-size: 0.95rem;
-    margin: 0;
-    line-height: 1.5;
+  &:hover {
+    border-color: rgba(76, 175, 80, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(76, 175, 80, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 }
 
 // Form styling
 .auth-form {
-  padding: 0 2rem 2rem;
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 
-  .form-field {
-    margin-bottom: 1.75rem;
+  .field-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 
-    // Float label enhancements
-    :host ::ng-deep .p-floatlabel {
-      label {
-        color: #9e9e9e;
-        font-size: 0.95rem;
-        transition: all 0.2s ease;
+    .p-float-label {
+      position: relative;
+      display: block;
+    }
 
-        i {
-          margin-right: 0.5rem;
-          font-size: 0.9rem;
-          color: #4caf50;
-        }
+    .form-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1rem;
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.4);
       }
 
-      // When focused or filled
-      input:focus ~ label,
-      .p-inputtext:focus ~ label,
-      .p-filled label {
-        color: #4caf50;
+      &:focus {
+        outline: none;
+        border-color: #4caf50;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2), 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      &:hover:not(:focus) {
+        border-color: rgba(76, 175, 80, 0.3);
+        background: rgba(255, 255, 255, 0.1);
       }
     }
 
-    // Input field styling - dark theme
-    :host ::ng-deep {
-      .p-inputtext,
-      .p-password input {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
-        background-color: #262626;
-        color: #ffffff;
-        border: 1.5px solid #333;
-        border-radius: 0.75rem;
-        transition: all 0.2s ease;
-
-        &::placeholder {
-          color: #666;
-        }
-
-        &:hover {
-          border-color: #444;
-          background-color: #2a2a2a;
-        }
-
-        &:focus {
-          border-color: #4caf50;
-          background-color: #2a2a2a;
-          box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1), 0 0 20px rgba(76, 175, 80, 0.05);
-          outline: none;
-        }
-      }
-
-      // Password field specific
-      .p-password {
-        width: 100%;
-
-        .p-password-input {
-          background-color: #262626 !important;
-          color: #ffffff !important;
-        }
-
-        .p-password-toggle-icon {
-          color: #666;
-          transition: color 0.2s ease;
-
-          &:hover {
-            color: #4caf50;
-          }
-        }
-      }
+    .form-label {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
     }
   }
 
-  // Form actions (button container)
+  .field-error {
+    color: #f44336;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    border-left: 2px solid #f44336;
+    background: rgba(244, 67, 54, 0.1);
+    border-radius: 4px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  // Form actions
   .form-actions {
     margin-top: 2rem;
 
-    :host ::ng-deep .p-button {
+    ::ng-deep .p-button {
       width: 100%;
       padding: 0.875rem 1.5rem;
       font-size: 1rem;
       font-weight: 600;
-      border-radius: 0.75rem;
-      background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4caf50, #66bb6a);
       border: none;
-      color: #000;
+      color: white;
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 
       &:not(:disabled):hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px -5px rgba(76, 175, 80, 0.4), 0 0 30px rgba(76, 175, 80, 0.2);
+        background: linear-gradient(135deg, #66bb6a, #81c784);
+        box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
       }
 
       &:not(:disabled):active {
@@ -186,17 +159,10 @@
       }
 
       &:disabled {
-        background: #333;
-        color: #666;
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.5);
         opacity: 0.6;
         cursor: not-allowed;
-      }
-
-      // Loading state
-      &.p-button-loading {
-        .p-button-label {
-          margin-left: 0.5rem;
-        }
       }
 
       .p-button-icon-left {
@@ -208,9 +174,9 @@
   // Form footer
   .form-footer {
     text-align: center;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #333;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 
     .forgot-password {
       margin: 0;
@@ -246,60 +212,163 @@
   }
 }
 
-// Validation styling - dark theme
+// PrimeNG specific overrides
 :host ::ng-deep {
-  // Email field validation - only when email is invalid
-  input[type='email'].ng-invalid.ng-dirty {
-    border-color: #f44336;
+  // Password field - Fix input size
+  .p-password {
+    width: 100%;
+    display: block;
 
-    &:focus {
-      border-color: #f44336;
-      box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+    &.p-inputwrapper {
+      width: 100%;
+    }
+
+    .p-password-input {
+      width: 100% !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 8px;
+      padding: 1rem !important;
+      color: #fff !important;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: #4caf50 !important;
+        background: rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2), 0 4px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      &:hover:not(:focus) {
+        border-color: rgba(76, 175, 80, 0.3) !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
+    }
+
+    .p-password-panel {
+      display: none; // Hide password strength panel if not needed
+    }
+
+    .p-password-toggle-icon {
+      color: rgba(255, 255, 255, 0.6);
+      transition: color 0.2s ease;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+
+      &:hover {
+        color: #4caf50;
+      }
     }
   }
 
-  // Password field validation - only when password is invalid
-  .p-password.ng-invalid.ng-dirty .p-inputtext {
-    border-color: #f44336;
+  // Ensure password field matches input field size
+  .field-group {
+    .p-password {
+      .p-inputtext {
+        width: 100% !important;
+        padding: 1rem !important;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  // Float labels
+  .p-float-label > label {
+    color: rgba(255, 255, 255, 0.6);
+
+    &.p-float-label-active {
+      color: #4caf50;
+      font-weight: 600;
+    }
+  }
+
+  // Input validation states
+  input.ng-invalid.ng-dirty {
+    border-color: #f44336 !important;
 
     &:focus {
-      border-color: #f44336;
-      box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+      border-color: #f44336 !important;
+      box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.2);
     }
+  }
+
+  .p-password.ng-invalid.ng-dirty .p-password-input {
+    border-color: #f44336 !important;
+
+    &:focus {
+      border-color: #f44336 !important;
+      box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.2);
+    }
+  }
+}
+
+// Animations
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 // Responsive design
-@media (max-width: 480px) {
-  .auth-card {
-    border-radius: 0;
-    height: 100vh;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border: none;
-  }
-
+@media (max-width: 768px) {
   .auth-container {
-    padding: 0;
-    align-items: stretch;
+    padding: 1rem;
   }
 
-  .auth-header {
-    padding: 2rem 1.5rem 1.5rem;
+  .form-header {
+    margin-bottom: 2rem;
 
-    .auth-title {
-      font-size: 1.5rem;
+    .form-title {
+      font-size: 2rem;
+
+      i {
+        font-size: 1.5rem;
+      }
+    }
+
+    .form-subtitle {
+      font-size: 1rem;
     }
   }
 
+  .auth-card {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
   .auth-form {
-    padding: 0 1.5rem 1.5rem;
+    .form-fields {
+      gap: 1rem;
+    }
   }
 }
 
-// Utility classes
-.w-full {
-  width: 100% !important;
+@media (max-width: 480px) {
+  .auth-card {
+    border-radius: 12px;
+  }
+
+  .form-header .form-title {
+    font-size: 1.75rem;
+  }
 }

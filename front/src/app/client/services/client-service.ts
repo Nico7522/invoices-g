@@ -1,5 +1,5 @@
 import { httpResource } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Signal } from '@angular/core';
 import { Client } from '../models/client';
 import { z } from 'zod';
 
@@ -7,6 +7,10 @@ import { z } from 'zod';
   providedIn: 'root',
 })
 export class ClientService {
+  /**
+   * Get all clients
+   * @returns A resourceResponse of client array
+   */
   getClients() {
     return httpResource<Client[]>(
       () => ({
@@ -15,19 +19,34 @@ export class ClientService {
       {
         defaultValue: [] as Client[],
         parse: (response) => {
-          return this.#clientScema.parse((response as { data: Client[] }).data);
+          return this.#clientSchema.array().parse((response as { data: Client[] }).data);
+        },
+      }
+    );
+  }
+  /**
+   * Get a client by id
+   * @param id - The id of the client
+   * @returns A resourceResponse with the client
+   */
+  getClient(id: Signal<string>) {
+    return httpResource<Client>(
+      () => ({
+        url: `api/clients/${id()}`,
+      }),
+      {
+        parse: (response) => {
+          return this.#clientSchema.parse((response as { data: Client }).data);
         },
       }
     );
   }
 
-  #clientScema = z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      surname: z.string(),
-      email: z.string(),
-      phoneNumber: z.number(),
-    })
-  );
+  #clientSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    surname: z.string(),
+    email: z.string(),
+    phoneNumber: z.number(),
+  });
 }

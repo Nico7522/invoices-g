@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { ClientService } from '../services/client-service';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-client-list',
-  imports: [TableModule, ButtonModule],
+  imports: [TableModule, ButtonModule, RouterModule],
   templateUrl: './client-list.html',
   styleUrl: './client-list.scss',
 })

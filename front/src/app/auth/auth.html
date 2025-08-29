@@ -1,39 +1,58 @@
-<div class="auth-container">
+<section class="auth-container">
+    <div class="form-header">
+        <h1 class="form-title">
+            <i class="pi pi-lock"></i>
+            Connexion
+        </h1>
+        <p class="form-subtitle">Bienvenue! Veuillez vous connecter à votre compte</p>
+    </div>
+
     <div class="auth-card">
-        <div class="auth-header">
-            <i class="pi pi-user auth-icon"></i>
-            <h2 class="auth-title">Connexion</h2>
-            <p class="auth-subtitle">Bienvenue! Veuillez vous connecter à votre compte</p>
-        </div>
-
         <form #loginForm="ngForm" (ngSubmit)="login(loginForm)" class="auth-form">
-            <div class="form-field">
-                <p-floatlabel>
-                    <input #emailModel="ngModel" [invalid]="emailModel.dirty && emailModel.invalid" email type="email"
-                        required pInputText id="email" autocomplete="email" [(ngModel)]="email" name="email"
-                        class="w-full" />
-                    <label for="email">
-                        <i class="pi pi-envelope"></i>
-                        Adresse email
-                    </label>
-                </p-floatlabel>
-            </div>
+            <div class="form-fields">
+                <div class="field-group">
+                    <p-floatlabel>
+                        <input #emailModel="ngModel" [invalid]="emailModel.dirty && emailModel.invalid" email
+                            type="email" required pInputText id="email" autocomplete="email" [(ngModel)]="email"
+                            name="email" class="form-input" />
+                        <label for="email" class="form-label">Adresse email</label>
+                    </p-floatlabel>
+                    @if (emailModel.dirty && emailModel.invalid) {
+                    <div class="field-error">
+                        @if (emailModel.errors?.['required']) {
+                        L'email est requis
+                        }
+                        @if (emailModel.errors?.['email']) {
+                        Format d'email invalide
+                        }
+                    </div>
+                    }
+                </div>
 
-            <div class="form-field">
-                <p-floatlabel>
-                    <p-password #pwdModel="ngModel" [invalid]="pwdModel.dirty" required [minlength]="8"
-                        passwordValidator type="password" [inputStyle]="{'width': '100%'}" [(ngModel)]="password"
-                        inputId="password" [feedback]="false" [toggleMask]="true" name="password" styleClass="w-full" />
-                    <label for="password">
-                        <i class="pi pi-lock"></i>
-                        Mot de passe
-                    </label>
-                </p-floatlabel>
+                <div class="field-group">
+                    <p-floatlabel>
+                        <p-password #pwdModel="ngModel" [invalid]="pwdModel.dirty && pwdModel.invalid" required
+                            [minlength]="8" passwordValidator type="password" [inputStyle]="{'width': '100%'}"
+                            [(ngModel)]="password" inputId="password" [feedback]="false" [toggleMask]="true"
+                            name="password" />
+                        <label for="password" class="form-label">Mot de passe</label>
+                    </p-floatlabel>
+                    @if (pwdModel.dirty && pwdModel.invalid) {
+                    <div class="field-error">
+                        @if (pwdModel.errors?.['required']) {
+                        Le mot de passe est requis
+                        }
+                        @if (pwdModel.errors?.['minlength']) {
+                        Le mot de passe doit contenir au moins 8 caractères
+                        }
+                    </div>
+                    }
+                </div>
             </div>
 
             <div class="form-actions">
                 <p-button [disabled]="loginForm.invalid" label="Se connecter" type="submit" icon="pi pi-sign-in"
-                    styleClass="w-full" [loading]="false" />
+                    [loading]="false" />
             </div>
 
             <div class="form-footer">
@@ -43,4 +62,4 @@
             </div>
         </form>
     </div>
-</div>
+</section>
