@@ -23,7 +23,7 @@ export class ClientEdit {
   constructor() {
     effect(() => {
       this.clientEditForm.patchValue({
-        client: { ...this.client.value(), phone: this.client.value()?.phoneNumber },
+        client: this.client.value(),
       });
     });
   }

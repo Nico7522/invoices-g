@@ -1,5 +1,5 @@
-import { httpResource } from '@angular/common/http';
-import { Injectable, Signal } from '@angular/core';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { inject, Injectable, Signal } from '@angular/core';
 import { Client } from '../models/client';
 import { z } from 'zod';
 
@@ -7,6 +7,7 @@ import { z } from 'zod';
   providedIn: 'root',
 })
 export class ClientService {
+  readonly #httpClient = inject(HttpClient);
   /**
    * Get all clients
    * @returns A resourceResponse of client array
@@ -40,6 +41,15 @@ export class ClientService {
         },
       }
     );
+  }
+
+  /**
+   * Create a client
+   * @param client - The client to create
+   * @returns A Observable with the response of the request
+   */
+  createClient(client: Partial<Client>) {
+    return this.#httpClient.post<unknown>('api/clients', client);
   }
 
   #clientSchema = z.object({

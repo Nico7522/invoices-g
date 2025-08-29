@@ -37,7 +37,7 @@ export class ClientForm implements OnInit {
         name: new FormControl('', [Validators.required]),
         surname: new FormControl('', [Validators.required]),
         email: new FormControl('', [Validators.required, Validators.email]),
-        phone: new FormControl('', [Validators.required]),
+        phoneNumber: new FormControl('', [Validators.required]),
       })
     );
   }
