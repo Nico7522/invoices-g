@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, input, Input, OnInit } from '@angular/core';
 import {
   ControlContainer,
   FormControl,
@@ -23,8 +23,8 @@ import { InputNumber } from 'primeng/inputnumber';
 })
 export class ClientForm implements OnInit {
   parentContainer = inject(ControlContainer);
-  @Input({ required: true }) controlKey = '';
-  @Input() label = '';
+  controlKey = input.required<string>();
+  label = input.required<string>();
 
   get parentFormGroup(): FormGroup {
     return this.parentContainer.control as FormGroup;
@@ -32,7 +32,7 @@ export class ClientForm implements OnInit {
 
   ngOnInit(): void {
     this.parentFormGroup.addControl(
-      this.controlKey,
+      this.controlKey(),
       new FormGroup({
         name: new FormControl('', [Validators.required]),
         surname: new FormControl('', [Validators.required]),
@@ -43,6 +43,6 @@ export class ClientForm implements OnInit {
   }
 
   ngOnDestroy() {
-    this.parentFormGroup.removeControl(this.controlKey);
+    this.parentFormGroup.removeControl(this.controlKey());
   }
 }

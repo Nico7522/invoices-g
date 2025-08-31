@@ -3,10 +3,11 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ClientForm } from '../../shared/ui/client-form/client-form';
 import { ButtonModule } from 'primeng/button';
 import { ClientService } from '../services/client-service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-client-edit',
-  imports: [ClientForm, ReactiveFormsModule, ButtonModule],
+  imports: [ClientForm, ReactiveFormsModule, ButtonModule, RouterModule],
   templateUrl: './client-edit.html',
   styleUrl: './client-edit.scss',
 })

@@ -8,7 +8,7 @@
                 <th>Prénom</th>
                 <th>Email</th>
                 <th>Téléphone</th>
-                <th>Editer</th>
+                <th>Détails</th>
                 <th>Supprimer</th>
             </tr>
         </ng-template>
@@ -20,7 +20,7 @@
                 <td>{{ client.email }}</td>
                 <td>{{ client.phoneNumber }}</td>
                 <td>
-                    <p-button [routerLink]="['/clients', client.id, 'edit']" label="Editer" icon="pi pi-pencil" />
+                    <p-button severity="info" [routerLink]="['/clients', client.id]" label="Détails" icon="pi pi-eye" />
                 </td>
                 <td>
                     <p-button severity="danger" label="Supprimer" icon="pi pi-trash" />

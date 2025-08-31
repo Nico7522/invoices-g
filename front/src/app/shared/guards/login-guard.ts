@@ -15,6 +15,11 @@ export const loginGuard: CanActivateFn = (route, state) => {
         router.navigate(['/auth/login']);
         return false;
       }
+    }),
+    // If the getUser fails, redirect to the login page
+    catchError((err) => {
+      router.navigate(['/auth/login']);
+      return EMPTY;
     })
   );
 };

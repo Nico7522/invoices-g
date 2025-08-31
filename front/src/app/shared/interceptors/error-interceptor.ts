@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { catchError, EMPTY, of, throwError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const messageService = inject(MessageService);
@@ -22,6 +22,13 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
             detail: 'Non autorisé',
           });
           break;
+        case 404:
+          messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Non trouvé',
+          });
+          break;
         default:
           messageService.add({
             severity: 'error',
@@ -30,7 +37,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           });
           break;
       }
-      return EMPTY;
+      return throwError(() => err);
     })
   );
 };

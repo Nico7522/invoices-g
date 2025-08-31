@@ -11,7 +11,8 @@
         <app-client-form controlKey="client" label="Client"></app-client-form>
 
         <div class="form-actions">
-            <p-button type="button" label="Annuler" icon="pi pi-times" severity="secondary" />
+            <p-button type="button" label="Retour" icon="pi pi-angle-double-left" severity="secondary"
+                routerLink="../" />
             <p-button type="submit" label="Enregistrer" icon="pi pi-check" [disabled]="clientEditForm.invalid" />
         </div>
     </form>

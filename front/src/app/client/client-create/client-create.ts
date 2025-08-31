@@ -4,24 +4,42 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ClientService } from '../services/client-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Client } from '../models/client';
+import { MessageService } from 'primeng/api';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-client-create',
-  imports: [ClientForm, ReactiveFormsModule, ButtonModule],
+  imports: [ClientForm, ReactiveFormsModule, ButtonModule, RouterModule],
   templateUrl: './client-create.html',
   styleUrl: './client-create.scss',
 })
 export class ClientCreate {
   readonly #clientService = inject(ClientService);
   readonly #destroyRef = inject(DestroyRef);
-  createClientForm = new FormGroup({});
+  readonly #messageService = inject(MessageService);
+  readonly createClientForm = new FormGroup({});
 
   onSubmit() {
     if (this.createClientForm.valid) {
-      this.#clientService
-        .createClient(this.createClientForm.value)
-        .pipe(takeUntilDestroyed(this.#destroyRef))
-        .subscribe((res) => console.log(res));
+      const clientValue = this.createClientForm.get('client')?.value;
+      if (clientValue) {
+        const client: Client = clientValue as Client;
+
+        this.#clientService
+          .createClient(client)
+          .pipe(takeUntilDestroyed(this.#destroyRef))
+          .subscribe({
+            next: (res) => {
+              this.#messageService.add({
+                severity: 'success',
+                summary: 'Succès',
+                detail: 'Client créé avec succès',
+              });
+              this.createClientForm.reset();
+            },
+          });
+      }
     }
   }
 }

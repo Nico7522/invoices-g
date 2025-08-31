@@ -31,16 +31,11 @@ export class ClientService {
    * @returns A resourceResponse with the client
    */
   getClient(id: Signal<string>) {
-    return httpResource<Client>(
-      () => ({
-        url: `api/clients/${id()}`,
-      }),
-      {
-        parse: (response) => {
-          return this.#clientSchema.parse((response as { data: Client }).data);
-        },
-      }
-    );
+    return httpResource<Client>(() => (id() ? `api/clients/${id()}` : undefined), {
+      parse: (response) => {
+        return this.#clientSchema.parse((response as { data: Client }).data);
+      },
+    });
   }
 
   /**
