@@ -42,7 +42,6 @@ export const authenticateUser = async (
       data: { user },
       error,
     } = await supabase.auth.getUser(accessToken);
-    console.log(user);
 
     if (error || !user) {
       // Tenter de rafraîchir avec le refresh token

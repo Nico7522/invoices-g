@@ -1,5 +1,5 @@
-import { Database } from "../types/database.types";
-import { ClientModel } from "../types/client";
+import { Database } from "../models/database.types";
+import { ClientModel } from "../models/client";
 
 /**
  * Maps a client from the database to a client DTO
