@@ -14,8 +14,6 @@ import { ClientModel } from "../models/client";
 export const getClientsService = async (
   supabase: ReturnType<typeof getAuthClient>
 ) => {
-  const auth = await supabase.auth.getSession();
-
   const { data, error } = await supabase.from("clients").select("*");
   if (error)
     throw new CustomError({

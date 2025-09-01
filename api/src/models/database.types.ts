@@ -44,6 +44,8 @@ export type Database = {
           created_at: string
           id: string
           invoice_id: string | null
+          quantity: number
+          total_price_excl_tax: number
           updated_at: string | null
         }
         Insert: {
@@ -51,6 +53,8 @@ export type Database = {
           created_at?: string
           id?: string
           invoice_id?: string | null
+          quantity: number
+          total_price_excl_tax: number
           updated_at?: string | null
         }
         Update: {
@@ -58,6 +62,8 @@ export type Database = {
           created_at?: string
           id?: string
           invoice_id?: string | null
+          quantity?: number
+          total_price_excl_tax?: number
           updated_at?: string | null
         }
         Relationships: [
@@ -112,18 +118,36 @@ export type Database = {
           client_id: string
           created_at: string
           id: string
+          labor_cost_excl_tax: number | null
+          other_fees_excl_tax: number | null
+          tax_amount: number | null
+          tax_rate: number
+          total_excl_tax: number
+          total_incl_tax: number
           updated_at: string
         }
         Insert: {
           client_id: string
           created_at?: string
           id?: string
+          labor_cost_excl_tax?: number | null
+          other_fees_excl_tax?: number | null
+          tax_amount?: number | null
+          tax_rate?: number
+          total_excl_tax: number
+          total_incl_tax: number
           updated_at?: string
         }
         Update: {
           client_id?: string
           created_at?: string
           id?: string
+          labor_cost_excl_tax?: number | null
+          other_fees_excl_tax?: number | null
+          tax_amount?: number | null
+          tax_rate?: number
+          total_excl_tax?: number
+          total_incl_tax?: number
           updated_at?: string
         }
         Relationships: [
