@@ -1,1 +1,43 @@
-<p>invoice-list works!</p>
+<section class="list">
+    <p-button [routerLink]="['/clients', 'create']" label="Créer une facture" icon="pi pi-plus" class="create-btn" />
+    <p-table [value]="invoices.value()" [tableStyle]="{ 'background-color': 'black' }">
+        <ng-template #header>
+            <tr>
+                <th>ID</th>
+                <th>ID Client</th>
+                <th>Montant HT</th>
+                <th>Taxe</th>
+                <th>Taux de taxe</th>
+                <th>Montant TTC</th>
+                <th>Coût de la main-d'oeuvre</th>
+                <th>Autres frais</th>
+                <th>Date de création</th>
+                <th>Date de modification</th>
+                <th>Détails</th>
+                <th>Supprimer</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-invoice>
+            <tr>
+                <td>{{ invoice.id }}</td>
+                <td>{{ invoice.clientId }}</td>
+                <td>{{ invoice.totalExclPrice }} €</td>
+                <td>{{ invoice.taxAmount }} €</td>
+                <td>{{ invoice.taxRate }} %</td>
+                <td>{{ invoice.totalInclPrice }} €</td>
+                <td>{{ invoice.laborCostExclPrice }} €</td>
+                <td>{{ invoice.otherFeesExclPrice }} €</td>
+                <td>{{ invoice.createdAt }}</td>
+                <td>{{ invoice.updatedAt }}</td>
+                <td>
+                    <p-button severity="info" [routerLink]="['/clients', invoice.id]" label="Détails"
+                        icon="pi pi-eye" />
+                </td>
+
+                <td>
+                    <p-button severity="danger" label="Supprimer" icon="pi pi-trash" #deleteBtn />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</section>

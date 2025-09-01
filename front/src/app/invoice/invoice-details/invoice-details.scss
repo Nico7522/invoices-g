@@ -1,0 +1,618 @@
+.invoice-details-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(76, 175, 80, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.6s ease;
+}
+
+// Invoice Header
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  .invoice-title {
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: linear-gradient(135deg, #4caf50, #81c784);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+
+      i {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #4caf50, #81c784);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+  }
+
+  .invoice-actions {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+// Invoice Sections
+.invoice-section {
+  margin: 2rem 0;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    i {
+      color: #4caf50;
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// Client Information Grid
+.client-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+
+  .info-item {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid rgba(76, 175, 80, 0.1);
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: rgba(76, 175, 80, 0.3);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      color: #9e9e9e;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .info-value {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      i {
+        color: #4caf50;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+// Line Items Table
+.line-items-table {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(76, 175, 80, 0.1);
+
+  ::ng-deep .p-datatable {
+    background: transparent;
+
+    .p-datatable-header {
+      background: #1a1a1a;
+      color: #4caf50;
+      font-weight: 600;
+      padding: 1rem;
+      border-bottom: 2px solid #4caf50;
+    }
+
+    .p-datatable-thead tr th {
+      background: #1a1a1a;
+      color: #4caf50;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: none;
+      padding: 1rem;
+    }
+
+    .p-datatable-tbody tr {
+      background: #262626;
+      border-bottom: 1px solid #333;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background: #2a2a2a;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      td {
+        padding: 1rem;
+        color: #ffffff;
+        border: none;
+        vertical-align: middle;
+      }
+    }
+
+    .p-datatable-emptymessage {
+      background: #262626;
+      color: #9e9e9e;
+      text-align: center;
+      padding: 2rem;
+      font-style: italic;
+    }
+  }
+}
+
+// Cost Breakdown
+.cost-breakdown {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid rgba(76, 175, 80, 0.1);
+
+  .cost-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+
+    &:not(.subtotal) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    &.subtotal {
+      border-top: 2px solid rgba(76, 175, 80, 0.3);
+      margin-top: 1rem;
+      padding-top: 1rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #4caf50;
+    }
+
+    span:first-child {
+      color: #ffffff;
+    }
+
+    span:last-child {
+      font-weight: 600;
+      color: #ffffff;
+    }
+  }
+}
+
+// Other Fees Section
+.other-fees-section {
+  margin: 1.5rem 0;
+
+  .other-fees-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+
+    &:hover {
+      background: rgba(76, 175, 80, 0.15);
+      border-color: rgba(76, 175, 80, 0.3);
+    }
+
+    span:first-child {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #4caf50;
+      font-weight: 600;
+
+      i {
+        transition: transform 0.3s ease;
+      }
+    }
+
+    .fees-amount {
+      font-weight: 600;
+      color: #ffffff;
+    }
+  }
+
+  .other-fees-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 0 0 8px 8px;
+
+    &.expanded {
+      max-height: 100px;
+    }
+
+    p {
+      margin: 1rem;
+      color: #9e9e9e;
+      font-style: italic;
+
+      &.no-fees {
+        color: #666;
+      }
+    }
+  }
+}
+
+// Tax and Total Section
+.tax-total-section {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(129, 199, 132, 0.1));
+  border-radius: 12px;
+  padding: 2rem;
+  border: 1px solid rgba(76, 175, 80, 0.2);
+
+  .tax-info {
+    margin-bottom: 2rem;
+
+    .tax-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      font-size: 0.95rem;
+
+      span:first-child {
+        color: #9e9e9e;
+      }
+
+      span:last-child {
+        font-weight: 600;
+        color: #ffffff;
+      }
+    }
+  }
+
+  .total-section {
+    border-top: 2px solid rgba(76, 175, 80, 0.3);
+    padding-top: 1.5rem;
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .total-label {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #4caf50;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .total-amount {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #ffffff;
+        text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+      }
+    }
+  }
+}
+
+// Invoice Footer
+.invoice-footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .footer-info {
+    p {
+      margin: 0.25rem 0;
+      color: #9e9e9e;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      i {
+        color: #4caf50;
+      }
+    }
+  }
+
+  .footer-actions {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Print Styles
+@media print {
+  .invoice-details-container {
+    box-shadow: none;
+    border: 1px solid #333;
+    background: white;
+    color: black;
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+  }
+
+  // Hide action buttons when printing
+  .invoice-actions,
+  .footer-actions {
+    display: none !important;
+  }
+
+  // Hide interactive elements
+  .other-fees-header {
+    cursor: default;
+    background: rgba(0, 0, 0, 0.05);
+    border-color: #ccc;
+  }
+
+  .other-fees-header i {
+    display: none;
+  }
+
+  // Ensure other fees are always expanded for printing
+  .other-fees-content {
+    max-height: none !important;
+    display: block !important;
+  }
+
+  // Improve table printing
+  .line-items-table {
+    border: 1px solid #333;
+    background: white;
+  }
+
+  ::ng-deep .p-datatable {
+    .p-datatable-thead tr th {
+      background: #f5f5f5 !important;
+      color: black !important;
+      border: 1px solid #333 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .p-datatable-tbody tr {
+      background: white !important;
+
+      &:nth-child(even) {
+        background: #f9f9f9 !important;
+      }
+
+      td {
+        border: 1px solid #ddd !important;
+        color: black !important;
+      }
+    }
+  }
+
+  // Improve text contrast for printing
+  .invoice-section h2 {
+    color: black !important;
+  }
+
+  .info-value,
+  .cost-row span:last-child,
+  .total-amount {
+    color: black !important;
+  }
+
+  // Ensure proper page breaks
+  .invoice-section {
+    page-break-inside: avoid;
+  }
+
+  .line-items-table {
+    page-break-inside: avoid;
+  }
+
+  // Hide footer info for cleaner print
+  .footer-info {
+    display: none;
+  }
+
+  // Make sure the total section is prominent
+  .tax-total-section {
+    background: #f0f0f0 !important;
+    border: 2px solid #333 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .total-label {
+    color: black !important;
+  }
+
+  // Remove hover effects and transitions for printing
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .invoice-details-container {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .invoice-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+
+    .invoice-title h1 {
+      font-size: 2rem;
+
+      i {
+        font-size: 1.5rem;
+      }
+    }
+
+    .invoice-actions {
+      justify-content: center;
+    }
+  }
+
+  .client-info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .invoice-details-container {
+    width: 98%;
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+
+  .invoice-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .line-items-table ::ng-deep .p-datatable {
+    .p-datatable-thead tr th,
+    .p-datatable-tbody tr td {
+      padding: 0.5rem;
+      font-size: 0.85rem;
+    }
+  }
+
+  .tax-total-section {
+    padding: 1.5rem;
+
+    .total-row .total-amount {
+      font-size: 1.5rem;
+    }
+  }
+
+  .invoice-footer {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .invoice-details-container {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+
+  .invoice-header .invoice-title h1 {
+    font-size: 1.75rem;
+  }
+
+  .client-info-grid .info-item {
+    padding: 1rem;
+  }
+
+  .cost-breakdown {
+    padding: 1rem;
+  }
+
+  .tax-total-section {
+    padding: 1rem;
+
+    .total-row {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+
+      .total-amount {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}
+
+@media print {
+  /* Masquer tout sauf le contenu de la facture */
+  body * {
+    visibility: hidden;
+  }
+
+  #invoicePrint,
+  #invoicePrint * {
+    visibility: visible;
+  }
+
+  #invoicePrint {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  /* Masquer les boutons d'action lors de l'impression */
+  .invoice-actions,
+  .footer-actions {
+    display: none !important;
+  }
+
+  /* Optimiser l'affichage pour l'impression */
+  .invoice-details-container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Éviter les coupures de page dans les sections importantes */
+  .invoice-section {
+    page-break-inside: avoid;
+  }
+}
