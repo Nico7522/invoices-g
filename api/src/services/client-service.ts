@@ -8,7 +8,7 @@ import {
 import { ClientModel } from "../models/client";
 
 /**
- * Returns all clients retrieved from the client repository
+ * Returns all clients retrieved from the database
  * @returns Array of clients using the clientToClienDto mapper
  */
 export const getClientsService = async (
@@ -28,7 +28,7 @@ export const getClientsService = async (
 };
 
 /**
- * Returns a client retrieved from the client repository
+ * Returns a client retrieved from the database
  * @param id - The id of the client to return
  * @returns The client with the given id using the clientToClienDto mapper
  */
@@ -52,7 +52,7 @@ export const getClientByIdService = async (
 };
 
 /**
- * Map a client model to a client and call the createClientRepository
+ * Map a client model to a client and insert it into the database
  * @param client - The client to create
  */
 export const createClientService = async (
@@ -66,6 +66,50 @@ export const createClientService = async (
   if (error)
     throw new CustomError({
       message: "Error creating client",
+      code: "BAD_REQUEST",
+      statusCode: 400,
+    });
+};
+
+/**
+ * Update a client
+ * @param client - The client to update
+ * @param supabase - The supabase client
+ * @returns The updated client
+ */
+export const updateClientService = async (
+  id: string,
+  client: ClientModel,
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  const { error } = await supabase
+    .from("clients")
+    .update(clientModelToClient(client))
+    .eq("id", id);
+
+  if (error)
+    throw new CustomError({
+      message: "Error updating client",
+      code: "BAD_REQUEST",
+      statusCode: 400,
+    });
+};
+
+/**
+ * Delete a client
+ * @param id - The id of the client to delete
+ * @param supabase - The supabase client
+ * @returns The deleted client
+ */
+export const deleteClientService = async (
+  id: string,
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  const { error } = await supabase.from("clients").delete().eq("id", id);
+
+  if (error)
+    throw new CustomError({
+      message: "Error deleting client",
       code: "BAD_REQUEST",
       statusCode: 400,
     });

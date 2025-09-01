@@ -46,7 +46,7 @@ export const getUserService = async (accessToken: string) => {
     throw new CustomError({
       message: "Unauthorized",
       code: "UNAUTHORIZED",
-      statusCode: error.status || 401,
+      statusCode: 401,
     });
 
   return { id: user?.id, email: user?.email };

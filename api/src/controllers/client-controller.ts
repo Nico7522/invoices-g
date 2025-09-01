@@ -3,6 +3,8 @@ import {
   getClientByIdService,
   getClientsService,
   createClientService,
+  updateClientService,
+  deleteClientService,
 } from "../services/client-service";
 
 export const getClients = async (req: Request, res: Response) => {
@@ -22,7 +24,7 @@ export const getClientById = async (req: Request, res: Response) => {
 
 export const createClient = async (req: Request, res: Response) => {
   const { name, surname, email, phoneNumber } = req.body;
-  const client = await createClientService(
+  await createClientService(
     {
       name,
       surname,
@@ -32,4 +34,26 @@ export const createClient = async (req: Request, res: Response) => {
     req.supabase
   );
   return res.status(200).json({ message: "Client created successfully" });
+};
+
+export const updateClient = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { name, surname, email, phoneNumber } = req.body;
+  await updateClientService(
+    id,
+    {
+      name,
+      surname,
+      email,
+      phoneNumber,
+    },
+    req.supabase
+  );
+  return res.status(200).json({ message: "Client updated successfully" });
+};
+
+export const deleteClient = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  await deleteClientService(id, req.supabase);
+  return res.status(200).json({ message: "Client deleted successfully" });
 };
