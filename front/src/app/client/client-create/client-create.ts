@@ -6,7 +6,7 @@ import { ClientService } from '../services/client-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Client } from '../models/client';
 import { MessageService } from 'primeng/api';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-client-create',
@@ -18,6 +18,7 @@ export class ClientCreate {
   readonly #clientService = inject(ClientService);
   readonly #destroyRef = inject(DestroyRef);
   readonly #messageService = inject(MessageService);
+  readonly #router = inject(Router);
   readonly createClientForm = new FormGroup({});
 
   onSubmit() {
@@ -36,7 +37,7 @@ export class ClientCreate {
                 summary: 'Succès',
                 detail: 'Client créé avec succès',
               });
-              this.createClientForm.reset();
+              this.#router.navigate(['/clients']);
             },
           });
       }

@@ -47,6 +47,25 @@ export class ClientService {
     return this.#httpClient.post<unknown>('api/clients', client);
   }
 
+  /**
+   * Update a client
+   * @param id - The id of the client
+   * @param client - The client to update
+   * @returns A Observable with the response of the request
+   */
+  updateClient(id: string, client: Partial<Client>) {
+    return this.#httpClient.put<unknown>(`api/clients/${id}`, client);
+  }
+
+  /**
+   * Delete a client
+   * @param id - The id of the client
+   * @returns A Observable with the response of the request
+   */
+  deleteClient(id: string) {
+    return this.#httpClient.delete<unknown>(`api/clients/${id}`);
+  }
+
   #clientSchema = z.object({
     id: z.string(),
     name: z.string(),

@@ -8,6 +8,10 @@
   gap: 1rem;
 }
 
+.create-btn {
+  align-self: self-start;
+}
+
 ::ng-deep div.p-datatable-table-container {
   border-radius: 0.75rem;
   overflow: hidden;

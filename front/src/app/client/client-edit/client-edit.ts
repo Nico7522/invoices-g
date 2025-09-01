@@ -1,9 +1,12 @@
-import { Component, effect, inject, input } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ClientForm } from '../../shared/ui/client-form/client-form';
 import { ButtonModule } from 'primeng/button';
 import { ClientService } from '../services/client-service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { Client } from '../client';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-client-edit',
@@ -13,12 +16,33 @@ import { RouterModule } from '@angular/router';
 })
 export class ClientEdit {
   readonly #clientService = inject(ClientService);
+  readonly #destroyRef = inject(DestroyRef);
+  readonly #messageService = inject(MessageService);
+  readonly #router = inject(Router);
   id = input.required<string>();
   client = this.#clientService.getClient(this.id);
   clientEditForm = new FormGroup({});
 
   onSubmit() {
-    console.log(this.clientEditForm.value);
+    if (this.clientEditForm.valid) {
+      const clientValue = this.clientEditForm.get('client')?.value;
+      if (clientValue) {
+        const client: Client = clientValue as Client;
+        this.#clientService
+          .updateClient(this.id(), client)
+          .pipe(takeUntilDestroyed(this.#destroyRef))
+          .subscribe({
+            next: (res) => {
+              this.#messageService.add({
+                severity: 'success',
+                summary: 'Succès',
+                detail: 'Client modifié avec succès',
+              });
+              this.#router.navigate(['/clients', this.id()]);
+            },
+          });
+      }
+    }
   }
 
   constructor() {
