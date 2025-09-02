@@ -8,6 +8,11 @@ export interface Invoice {
 }
 
 export interface InvoiceDetails extends Invoice {
+  clientInfo: {
+    name: string;
+    surname: string;
+    phoneNumber: number;
+  };
   clientId: string;
   taxAmount: number;
   taxRate: number;

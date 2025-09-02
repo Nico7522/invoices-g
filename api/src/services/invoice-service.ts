@@ -11,7 +11,6 @@ export const getInvoicesService = async (
   supabase: ReturnType<typeof getAuthClient>
 ) => {
   const { data, error } = await supabase.from("invoices").select(`*`);
-  console.log(error);
 
   if (error)
     throw new CustomError({
@@ -30,7 +29,7 @@ export const getInvoiceDetailsService = async (
   const { data, error } = await supabase
     .from("invoices")
     .select(
-      `*,car_parts_invoices (car_part_id, quantity, total_price_excl_tax, car_parts (id, name, price ))`
+      `*,car_parts_invoices (car_part_id, quantity, total_price_excl_tax, car_parts (id, name, price )), clients (id, name, surname, phone_number)`
     )
     .eq("id", id)
     .single();
@@ -41,6 +40,8 @@ export const getInvoiceDetailsService = async (
       code: "BAD_REQUEST",
       statusCode: 400,
     });
+
+  // TODO: faire un mapper
   let invoiceDetails: InvoiceDetails = {
     ...invoiceToInvoiceDto(data),
     clientId: data.client_id,
@@ -49,6 +50,11 @@ export const getInvoiceDetailsService = async (
     laborCostExclTax: data.labor_cost_excl_tax,
     otherFeesExclTax: data.other_fees_excl_tax,
     updatedAt: data.updated_at,
+    clientInfo: {
+      name: data.clients?.name,
+      surname: data.clients?.surname,
+      phoneNumber: data.clients?.phone_number,
+    },
     carPartsInvoice: data.car_parts_invoices.map((carPartInvoice) => ({
       id: carPartInvoice.car_part_id,
       name: carPartInvoice.car_parts?.name,
