@@ -1,153 +1,166 @@
-<div id="invoicePrint" #invoicePrint class="invoice-details-container">
-    <!-- Invoice Header -->
-    <div class="invoice-header">
-        <div class="invoice-title">
-            <h1>
-                <i class="pi pi-receipt"></i>
-                Facture #{{ invoice()?.id || 'FACT-001' }}
-            </h1>
-            <p-tag [value]="invoice()?.createdAt ? formatDate(invoice()!.createdAt) : 'Date non disponible'"
-                severity="info" icon="pi pi-calendar">
-            </p-tag>
-        </div>
-        <div class="invoice-actions">
-            <p-button label="Imprimer" icon="pi pi-print" severity="secondary" styleClass="mr-2"
-                (onClick)="printInvoice()">
-            </p-button>
-            <p-button label="Télécharger PDF" icon="pi pi-download" severity="success">
-            </p-button>
-        </div>
-    </div>
-
-    <p-divider></p-divider>
-
-    <!-- Client Information -->
-    <div class="invoice-section">
-        <h2>
-            <i class="pi pi-user"></i>
-            Informations Client
-        </h2>
-        <div class="client-info-grid">
-            <div class="info-item">
-                <label>Nom</label>
-                <span class="info-value">{{ mockClient.name }}</span>
+<section class="invoice-details-container">
+    @if(invoice.hasValue()){
+    <div id="invoicePrint" #invoicePrint>
+        <div class="invoice-header">
+            <div class="invoice-title">
+                <h1>
+                    <i class="pi pi-receipt"></i>
+                    Facture #{{ invoice.value().id }}
+                </h1>
+                <p-tag [value]="invoice.value().createdAt || 'Date non disponible'" severity="info"
+                    icon="pi pi-calendar">
+                </p-tag>
             </div>
-            <div class="info-item">
-                <label>Prénom</label>
-                <span class="info-value">{{ mockClient.surname }}</span>
-            </div>
-            <div class="info-item">
-                <label>Téléphone</label>
-                <span class="info-value">{{ mockClient.phoneNumber }}</span>
+            <div class="invoice-actions">
+                <p-button label="Imprimer" icon="pi pi-print" severity="secondary" (onClick)="printInvoice()">
+                </p-button>
+                <p-button label="Télécharger PDF" icon="pi pi-download" severity="success">
+                </p-button>
             </div>
         </div>
-    </div>
 
-    <p-divider></p-divider>
+        <p-divider></p-divider>
 
-    <!-- Line Items Table -->
-    <div class="invoice-section">
-        <h2>
-            <i class="pi pi-cog"></i>
-            Pièces et Main d'œuvre
-        </h2>
-        <div class="line-items-table">
-            <p-table [value]="lineItems" styleClass="p-datatable-sm">
-                <ng-template #header>
-                    <tr>
-                        <th>Description</th>
-                        <th style="text-align: center;">Quantité</th>
-                        <th style="text-align: right;">Prix Unit.</th>
-                        <th style="text-align: right;">Total HT</th>
-                    </tr>
-                </ng-template>
-                <ng-template #body let-item>
-                    <tr>
-                        <td>{{ item.description }}</td>
-                        <td style="text-align: center;">{{ item.quantity }}</td>
-                        <td style="text-align: right;">{{ formatCurrency(item.unitPrice) }}</td>
-                        <td style="text-align: right; font-weight: 600;">{{ formatCurrency(item.total) }}</td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-    </div>
-
-    <!-- Cost Breakdown -->
-    <div class="invoice-section">
-        <div class="cost-breakdown">
-            <div class="cost-row">
-                <span>Sous-total pièces</span>
-                <span>{{ formatCurrency(lineItemsTotal()) }}</span>
-            </div>
-            <div class="cost-row">
-                <span>Main d'œuvre HT</span>
-                <span>{{ formatCurrency(invoice()?.laborCostExclPrice || 0) }}</span>
-            </div>
-
-            <!-- Other Fees (Hidable) -->
-            <div class="other-fees-section">
-                <div class="other-fees-header" (click)="toggleOtherFees()">
-                    <span>
-                        <i class="pi" [class]="showOtherFees ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
-                        Autres frais HT
-                    </span>
-                    <span class="fees-amount">
-                        {{ formatCurrency(invoice()?.otherFeesExclPrice || 0) }}
-                    </span>
+        <!-- Client Information -->
+        <div class="invoice-section">
+            <h2>
+                <i class="pi pi-user"></i>
+                Informations Client
+            </h2>
+            <div class="client-info-grid">
+                <div class="info-item">
+                    <label>Nom</label>
+                    <span class="info-value">{{ invoice.value().clientInfo.name }}</span>
                 </div>
-                <div class="other-fees-content" [class.expanded]="showOtherFees">
-                    <p *ngIf="invoice()?.otherFeesExclPrice">
-                        Frais supplémentaires divers (livraison, assurance, etc.)
-                    </p>
-                    <p *ngIf="!invoice()?.otherFeesExclPrice" class="no-fees">
-                        Aucun frais supplémentaire
-                    </p>
+                <div class="info-item">
+                    <label>Prénom</label>
+                    <span class="info-value">{{ invoice.value().clientInfo.surname }}</span>
                 </div>
-            </div>
-
-            <div class="cost-row subtotal">
-                <span>Sous-total HT</span>
-                <span>{{ formatCurrency(subtotal()) }}</span>
-            </div>
-        </div>
-    </div>
-
-    <p-divider></p-divider>
-
-    <!-- Tax and Total -->
-    <div class="invoice-section">
-        <div class="tax-total-section">
-            <div class="tax-info">
-                <div class="tax-row">
-                    <span>Taux de TVA</span>
-                    <span>{{ invoice()?.taxRate || 0 }}%</span>
-                </div>
-                <div class="tax-row">
-                    <span>Montant TVA</span>
-                    <span>{{ formatCurrency(taxAmount()) }}</span>
-                </div>
-            </div>
-
-            <div class="total-section">
-                <div class="total-row">
-                    <span class="total-label">TOTAL TTC</span>
-                    <span class="total-amount">{{ formatCurrency(totalWithTax()) }}</span>
+                <div class="info-item">
+                    <label>Téléphone</label>
+                    <span class="info-value">{{ invoice.value().clientInfo.phoneNumber }}</span>
                 </div>
             </div>
         </div>
+
+        <p-divider></p-divider>
+
+        <!-- Line Items Table -->
+        <div class="invoice-section">
+            <h2>
+                <i class="pi pi-cog"></i>
+                Pièces et Main d'œuvre
+            </h2>
+            <div class="line-items-table">
+                <p-table [value]="invoice.value().carPartsInvoice" styleClass="p-datatable-sm">
+                    <ng-template #header>
+                        <tr>
+                            <th>Description</th>
+                            <th style="text-align: center;">Quantité</th>
+                            <th style="text-align: right;">Prix Unit.</th>
+                            <th style="text-align: right;">Total HT</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-item>
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td style="text-align: center;">{{ item.quantity }}</td>
+                            <td style="text-align: right;">{{ item.price }}</td>
+                            <td style="text-align: right; font-weight: 600;">{{ item.totalPriceExclTax }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+        <!-- Cost Breakdown -->
+        <div class="invoice-section">
+            <div class="cost-breakdown">
+                <div class="cost-row">
+                    <span>Sous-total pièces</span>
+                    <span>{{ subtotal() }}</span>
+                </div>
+                <div class="cost-row">
+                    <span>Main d'œuvre HT</span>
+                    <span>{{ invoice.value().laborCostExclTax || 0 }}</span>
+                </div>
+
+                <!-- Other Fees (Hidable) -->
+                <div class="other-fees-section">
+                    <div class="other-fees-header" (click)="toggleOtherFees()">
+                        <span>
+                            <i class="pi" [class]="showOtherFees ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
+                            Autres frais HT
+                        </span>
+                        <span class="fees-amount">
+                            {{ invoice.value().otherFeesExclTax || 0 }}
+                        </span>
+                    </div>
+                    <div class="other-fees-content" [class.expanded]="showOtherFees">
+                        @if(invoice.value().otherFeesExclTax) {
+                        <p>
+                            Frais supplémentaires divers (livraison, assurance, etc.)
+                        </p>
+                        }
+                        @if(!invoice.value().otherFeesExclTax) {
+                        <p class="no-fees">
+                            Aucun frais supplémentaire
+                        </p>
+                        }
+                    </div>
+                </div>
+
+                <div class="cost-row subtotal">
+                    <span>Sous-total HT</span>
+                    <span>{{ invoice.value().totalExclTax }}</span>
+                </div>
+            </div>
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Tax and Total -->
+        <div class="invoice-section">
+            <div class="tax-total-section">
+                <div class="tax-info">
+                    <div class="tax-row">
+                        <span>Taux de TVA</span>
+                        <span>{{ invoice.value().taxRate }}%</span>
+                    </div>
+                    <div class="tax-row">
+                        <span>Montant TVA</span>
+                        <span>{{ invoice.value().taxAmount }}</span>
+                    </div>
+                </div>
+
+                <div class="total-section">
+                    <div class="total-row">
+                        <span class="total-label">TOTAL TTC</span>
+                        <span class="total-amount">{{ invoice.value().totalInclTax }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Footer -->
+        <div class="invoice-footer">
+            <div class="footer-info">
+                <p><i class="pi pi-info-circle"></i> Cette facture est générée automatiquement</p>
+                <p><i class="pi pi-clock"></i> Créée le {{ invoice.value().createdAt || ""}}</p>
+            </div>
+            <div class="footer-actions">
+                <p-button label="Retour" icon="pi pi-arrow-left" severity="secondary" routerLink="/invoices">
+                </p-button>
+            </div>
+        </div>
     </div>
 
-    <!-- Invoice Footer -->
-    <div class="invoice-footer">
-        <div class="footer-info">
-            <p><i class="pi pi-info-circle"></i> Cette facture est générée automatiquement</p>
-            <p><i class="pi pi-clock"></i> Créée le {{ invoice()?.createdAt ? formatDate(invoice()!.createdAt) : 'Date
-                non disponible' }}</p>
-        </div>
-        <div class="footer-actions">
-            <p-button label="Retour" icon="pi pi-arrow-left" severity="secondary" routerLink="/invoices">
-            </p-button>
-        </div>
-    </div>
-</div>
+    }
+    @else if(invoice.error()){
+    <app-error-card message="Erreur lors de la récupération de la facture" />
+    }
+    @else if(invoice.isLoading()){
+    <app-loading-card message="Chargement de la facture..." />
+    }
+
+</section>

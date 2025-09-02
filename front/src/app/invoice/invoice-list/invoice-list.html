@@ -4,15 +4,9 @@
         <ng-template #header>
             <tr>
                 <th>ID</th>
-                <th>ID Client</th>
                 <th>Montant HT</th>
-                <th>Taxe</th>
-                <th>Taux de taxe</th>
                 <th>Montant TTC</th>
-                <th>Coût de la main-d'oeuvre</th>
-                <th>Autres frais</th>
                 <th>Date de création</th>
-                <th>Date de modification</th>
                 <th>Détails</th>
                 <th>Supprimer</th>
             </tr>
@@ -20,17 +14,12 @@
         <ng-template #body let-invoice>
             <tr>
                 <td>{{ invoice.id }}</td>
-                <td>{{ invoice.clientId }}</td>
-                <td>{{ invoice.totalExclPrice }} €</td>
-                <td>{{ invoice.taxAmount }} €</td>
-                <td>{{ invoice.taxRate }} %</td>
-                <td>{{ invoice.totalInclPrice }} €</td>
-                <td>{{ invoice.laborCostExclPrice }} €</td>
-                <td>{{ invoice.otherFeesExclPrice }} €</td>
+                <td>{{ invoice.totalExclTax }} €</td>
+
+                <td>{{ invoice.totalInclTax }} €</td>
                 <td>{{ invoice.createdAt }}</td>
-                <td>{{ invoice.updatedAt }}</td>
                 <td>
-                    <p-button severity="info" [routerLink]="['/clients', invoice.id]" label="Détails"
+                    <p-button severity="info" [routerLink]="['/invoices', invoice.id]" label="Détails"
                         icon="pi pi-eye" />
                 </td>
 

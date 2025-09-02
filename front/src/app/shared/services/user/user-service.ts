@@ -1,6 +1,6 @@
 import { HttpClient, httpResource } from '@angular/common/http';
 import { computed, inject, Injectable, linkedSignal, resource, signal } from '@angular/core';
-import { UserInfo } from '../../models/user-info';
+import { UserInfo } from '../../models/user-info-interface';
 import z from 'zod';
 import { rxResource, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { map, Observable } from 'rxjs';

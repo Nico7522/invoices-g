@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Invoice } from '../models/invoice-interface';
+import { Injectable, Signal } from '@angular/core';
+import { Invoice, InvoiceDetails } from '../models/invoice-interface';
 import { httpResource } from '@angular/common/http';
 import z from 'zod';
 
@@ -19,8 +19,6 @@ export class InvoiceService {
       {
         defaultValue: [] as Invoice[],
         parse: (response) => {
-          console.log(response);
-
           return this.#invoiceSchema.array().parse((response as { data: Invoice[] }).data);
         },
       }
@@ -29,14 +27,21 @@ export class InvoiceService {
 
   readonly #invoiceSchema = z.object({
     id: z.string(),
-    clientId: z.string(),
-    totalExclPrice: z.number(),
-    taxAmount: z.number(),
-    taxRate: z.number(),
-    totalInclPrice: z.number(),
-    laborCostExclPrice: z.number(),
-    otherFeesExclPrice: z.number(),
+    totalExclTax: z.number(),
     createdAt: z.string(),
-    updatedAt: z.string(),
+    totalInclTax: z.number(),
   });
+
+  /**
+   * Get invoice details
+   * @param id - The id of the invoice
+   * @returns A resourceResponse with the invoice details
+   */
+  getInvoiceDetails(id: Signal<string>) {
+    return httpResource<InvoiceDetails>(() => (id() ? `api/invoices/${id()}` : undefined), {
+      parse: (response) => {
+        return (response as { data: InvoiceDetails }).data;
+      },
+    });
+  }
 }
