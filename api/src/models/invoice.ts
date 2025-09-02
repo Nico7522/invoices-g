@@ -1,12 +1,23 @@
+import { CarPart } from "./carPart";
+
 export interface Invoice {
   id: string;
+  totalExclTax: number;
+  createdAt: string;
+  totalInclTax: number;
+}
+
+export interface InvoiceDetails extends Invoice {
   clientId: string;
-  totalExclPrice: number;
   taxAmount: number;
   taxRate: number;
-  totalInclPrice: number;
-  laborCostExclPrice: number;
-  otherFeesExclPrice: number;
-  createdAt: string;
+  laborCostExclTax: number;
+  otherFeesExclTax: number | null;
   updatedAt: string;
+  carPartsInvoice: CarPartInvoice[];
+}
+
+interface CarPartInvoice extends CarPart {
+  totalPriceExclTax: number;
+  quantity: number;
 }

@@ -19,49 +19,49 @@ export type Database = {
           created_at: string
           id: string
           name: string
-          price: number | null
+          price: number
           updated_dat: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
-          price?: number | null
+          price: number
           updated_dat?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
-          price?: number | null
+          price?: number
           updated_dat?: string | null
         }
         Relationships: []
       }
       car_parts_invoices: {
         Row: {
-          car_part_id: string | null
+          car_part_id: string
           created_at: string
           id: string
-          invoice_id: string | null
+          invoice_id: string
           quantity: number
           total_price_excl_tax: number
           updated_at: string | null
         }
         Insert: {
-          car_part_id?: string | null
+          car_part_id?: string
           created_at?: string
           id?: string
-          invoice_id?: string | null
+          invoice_id: string
           quantity: number
           total_price_excl_tax: number
           updated_at?: string | null
         }
         Update: {
-          car_part_id?: string | null
+          car_part_id?: string
           created_at?: string
           id?: string
-          invoice_id?: string | null
+          invoice_id?: string
           quantity?: number
           total_price_excl_tax?: number
           updated_at?: string | null
@@ -118,9 +118,9 @@ export type Database = {
           client_id: string
           created_at: string
           id: string
-          labor_cost_excl_tax: number | null
+          labor_cost_excl_tax: number
           other_fees_excl_tax: number | null
-          tax_amount: number | null
+          tax_amount: number
           tax_rate: number
           total_excl_tax: number
           total_incl_tax: number
@@ -130,9 +130,9 @@ export type Database = {
           client_id: string
           created_at?: string
           id?: string
-          labor_cost_excl_tax?: number | null
+          labor_cost_excl_tax: number
           other_fees_excl_tax?: number | null
-          tax_amount?: number | null
+          tax_amount: number
           tax_rate?: number
           total_excl_tax: number
           total_incl_tax: number
@@ -142,9 +142,9 @@ export type Database = {
           client_id?: string
           created_at?: string
           id?: string
-          labor_cost_excl_tax?: number | null
+          labor_cost_excl_tax?: number
           other_fees_excl_tax?: number | null
-          tax_amount?: number | null
+          tax_amount?: number
           tax_rate?: number
           total_excl_tax?: number
           total_incl_tax?: number
