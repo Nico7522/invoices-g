@@ -1,5 +1,7 @@
 <section class="invoice-details-container">
     @if(invoice.hasValue()){
+
+
     <div id="invoicePrint" #invoicePrint>
         <div class="invoice-header">
             <div class="invoice-title">
@@ -14,7 +16,13 @@
             <div class="invoice-actions">
                 <p-button label="Imprimer" icon="pi pi-print" severity="secondary" (onClick)="printInvoice()">
                 </p-button>
-                <p-button label="Télécharger PDF" icon="pi pi-download" severity="success" (onClick)="generatePdf()">
+
+                <p-button [label]=" pdfLoading() ? 'Téléchargement en cours...' :'Télécharger PDF'"
+                    icon="pi pi-download" severity="success" (onClick)="generatePdf()" [disabled]="pdfLoading()">
+                    @if(pdfLoading()){
+                    <p-progress-spinner ariaLabel="loading" [style]="{ width: '20px', height: '20px' }"
+                        strokeWidth="7" />
+                    }
                 </p-button>
             </div>
         </div>

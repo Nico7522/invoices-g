@@ -12,7 +12,7 @@ import { LoadingCard } from '../../shared/ui/loading-card/loading-card';
 import { InvoiceDetails as InvoiceDetailsType } from '../models/invoice-interface';
 import { generatePdfHtml } from '../../shared/utils/generate-pdf';
 import { take } from 'rxjs';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @Component({
   selector: 'app-invoice-details',
   imports: [
@@ -25,12 +25,14 @@ import { take } from 'rxjs';
     DividerModule,
     ErrorCard,
     LoadingCard,
+    ProgressSpinnerModule,
   ],
   templateUrl: './invoice-details.html',
   styleUrl: './invoice-details.scss',
 })
 export class InvoiceDetails {
   readonly #invoiceService = inject(InvoiceService);
+  pdfLoading = signal(false);
   id = input.required<string>();
   invoice = this.#invoiceService.getInvoiceDetails(this.id);
   readonly invoicePrint = viewChild.required<ElementRef<HTMLElement>>('invoicePrint');
@@ -57,9 +59,17 @@ export class InvoiceDetails {
 
   generatePdf() {
     const htmlContent = generatePdfHtml(this.invoice.value() as InvoiceDetailsType);
+    this.pdfLoading.set(true);
     this.#invoiceService
       .generatePdf(htmlContent, this.invoice.value()?.id.toString())
       .pipe(take(1))
-      .subscribe();
+      .subscribe({
+        complete: () => {
+          this.pdfLoading.set(false);
+        },
+        error: () => {
+          this.pdfLoading.set(false);
+        },
+      });
   }
 }
