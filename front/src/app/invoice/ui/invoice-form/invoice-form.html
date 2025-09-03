@@ -1,0 +1,52 @@
+<div [formGroupName]="controlKey()">
+    <p-floatlabel>
+        <p-select id="clientId" formControlName="clientId" [options]="clients()" optionLabel="name" optionValue="id" />
+        <label for="clientId">Client</label>
+    </p-floatlabel>
+    <!-- Add car parts -->
+    <div formArrayName="carParts">
+        @for(part of carParts.controls; track part; let i = $index){
+        <div class="car-parts" [formGroupName]="i">
+            <p-floatlabel>
+                <p-select placeholder="Choisir une pièce" id="name" formControlName="partId" [options]="carPartsApi()"
+                    optionLabel="name" optionValue="id" />
+                <label for="clientId">Pièce</label>
+            </p-floatlabel>
+            <p-floatlabel>
+                <p-inputnumber inputId="quantity" formControlName="quantity" />
+                <label for="quantity">Quantité</label>
+            </p-floatlabel>
+            <p-button icon="pi pi-trash" severity="danger" (onClick)="removeCarPart(i)" />
+        </div>
+        }
+        <p-button label="Ajouter une pièce" icon="pi pi-plus" severity="success" (onClick)="addCarPart()" />
+    </div>
+
+
+    <p-floatlabel>
+        <p-inputnumber inputId="laborCostExclTax" formControlName="laborCostExclTax" mode="currency" currency="EUR" />
+        <label for="laborCostExclTax">Main d'oeuvre</label>
+    </p-floatlabel>
+
+    <p-floatlabel>
+        <p-inputnumber inputId="otherFeesExclTax" formControlName="otherFeesExclTax" mode="currency" currency="EUR" />
+        <label for="otherFeesExclTax">Autres frais</label>
+    </p-floatlabel>
+
+    <div class="total-price">
+        <div>
+            <h3>Total pièces HT</h3>
+            <span>{{ totalPartPrice() | currency:'EUR' }}</span>
+        </div>
+        <div>
+            <h3>Total HT</h3>
+            <span>{{ totalPriceExclTax() | currency:'EUR' }}</span>
+
+        </div>
+
+        <div>
+            <h3>Total TTC</h3>
+            <span>{{ totalPriceInclTax() | currency:'EUR' }}</span>
+        </div>
+    </div>
+</div>

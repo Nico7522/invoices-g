@@ -4,7 +4,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ClientService } from '../services/client-service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Client } from '../models/client';
+import { Client } from '../../shared/models/client-interfaces';
 import { MessageService } from 'primeng/api';
 import { Router, RouterModule } from '@angular/router';
 

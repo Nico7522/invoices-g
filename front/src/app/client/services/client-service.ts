@@ -1,30 +1,14 @@
 import { HttpClient, httpResource } from '@angular/common/http';
 import { inject, Injectable, Signal } from '@angular/core';
-import { Client } from '../models/client';
-import { z } from 'zod';
+import { Client } from '../../shared/models/client-interfaces';
+import { clientSchema } from '../../shared/schemas/client-schema';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientService {
   readonly #httpClient = inject(HttpClient);
-  /**
-   * Get all clients
-   * @returns A resourceResponse of client array
-   */
-  getClients() {
-    return httpResource<Client[]>(
-      () => ({
-        url: 'api/clients',
-      }),
-      {
-        defaultValue: [] as Client[],
-        parse: (response) => {
-          return this.#clientSchema.array().parse((response as { data: Client[] }).data);
-        },
-      }
-    );
-  }
+
   /**
    * Get a client by id
    * @param id - The id of the client
@@ -33,7 +17,7 @@ export class ClientService {
   getClient(id: Signal<string>) {
     return httpResource<Client>(() => (id() ? `api/clients/${id()}` : undefined), {
       parse: (response) => {
-        return this.#clientSchema.parse((response as { data: Client }).data);
+        return clientSchema.parse((response as { data: Client }).data);
       },
     });
   }
@@ -65,12 +49,4 @@ export class ClientService {
   deleteClient(id: string) {
     return this.#httpClient.delete<unknown>(`api/clients/${id}`);
   }
-
-  #clientSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    surname: z.string(),
-    email: z.string(),
-    phoneNumber: z.number(),
-  });
 }

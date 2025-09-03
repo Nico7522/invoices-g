@@ -1,0 +1,20 @@
+<section class="client-form-container">
+    <div class="form-header">
+        <h1 class="form-title">
+            <i class="pi pi-user-edit"></i>
+            Création Facture
+        </h1>
+        <p class="form-subtitle">Créez une nouvelle facture</p>
+    </div>
+
+    <form [formGroup]="createInvoiceForm" class="form" (ngSubmit)="onSubmit()">
+        <app-invoice-form controlKey="invoice" label="Facture" [clients]="clients.value()"
+            [carPartsApi]="carParts.value()"></app-invoice-form>
+
+        <div class="form-actions">
+            <p-button type="button" label="Retour" icon="pi pi-angle-double-left" severity="secondary"
+                routerLink="/invoices" />
+            <p-button type="submit" label="Enregistrer" icon="pi pi-check" [disabled]="createInvoiceForm.invalid" />
+        </div>
+    </form>
+</section>

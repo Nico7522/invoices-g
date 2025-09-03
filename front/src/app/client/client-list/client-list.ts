@@ -1,11 +1,12 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { ClientService } from '../services/client-service';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RouterModule } from '@angular/router';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { GetClientService } from '../../shared/services/client/get-client-service';
+import { ClientService } from '../services/client-service';
 @Component({
   selector: 'app-client-list',
   imports: [TableModule, ButtonModule, RouterModule, ConfirmPopupModule],
@@ -15,10 +16,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class ClientList {
   readonly #clientService = inject(ClientService);
+  readonly #getClientService = inject(GetClientService);
   readonly #confirmationService = inject(ConfirmationService);
   readonly #messageService = inject(MessageService);
   readonly #destroyRef = inject(DestroyRef);
-  clients = this.#clientService.getClients();
+  clients = this.#getClientService.getClients();
 
   confirmDelete(event: Event, id: string) {
     this.#confirmationService.confirm({

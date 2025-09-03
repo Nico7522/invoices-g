@@ -9,8 +9,8 @@ import { DividerModule } from 'primeng/divider';
 import { InvoiceService } from '../services/invoice-service';
 import { ErrorCard } from '../../shared/ui/error-card/error-card';
 import { LoadingCard } from '../../shared/ui/loading-card/loading-card';
-import { InvoiceDetails as InvoiceDetailsType } from '../models/invoice-interface';
 import { generatePdfHtml } from '../../shared/utils/generate-pdf';
+import { InvoiceDetails as InvoiceDetailsType } from '../models/invoice-interface';
 import { take } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @Component({
@@ -35,7 +35,6 @@ export class InvoiceDetails {
   pdfLoading = signal(false);
   id = input.required<string>();
   invoice = this.#invoiceService.getInvoiceDetails(this.id);
-  readonly invoicePrint = viewChild.required<ElementRef<HTMLElement>>('invoicePrint');
   showOtherFees = signal(false);
 
   subtotal = computed(() => {
@@ -49,12 +48,25 @@ export class InvoiceDetails {
   }
 
   printInvoice() {
-    const printElement = this.invoicePrint().nativeElement;
-    console.log(printElement);
-    if (!printElement) {
+    const invoice = this.invoice.value();
+    if (!invoice) {
       return;
     }
-    window.print();
+
+    // Créer une nouvelle fenêtre avec le style PDF pour l'impression
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      return;
+    }
+
+    const htmlContent = generatePdfHtml(invoice);
+    printWindow.document.open(htmlContent);
+
+    // Attendre que le contenu soit chargé puis imprimer
+    printWindow.onload = () => {
+      printWindow.print();
+      printWindow.close();
+    };
   }
 
   generatePdf() {
