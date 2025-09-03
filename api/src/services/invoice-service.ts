@@ -2,10 +2,8 @@ import { getAuthClient } from "../config/supabase";
 import CustomError from "../errors/custom-error";
 import { invoiceToInvoiceDto } from "../mappers/invoice-mapper";
 import { InvoiceDetails } from "../models/invoice";
-global.btoa = (b) => Buffer.from(b).toString("base64");
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-import fs from "fs";
 dotenv.config();
 export const getInvoicesService = async (
   supabase: ReturnType<typeof getAuthClient>
