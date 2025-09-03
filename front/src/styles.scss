@@ -422,3 +422,84 @@ body {
     }
   }
 }
+
+@media print {
+  /* Masquer tout sauf le contenu de la facture */
+  body * {
+    visibility: hidden;
+  }
+
+  #invoicePrint,
+  #invoicePrint * {
+    visibility: visible;
+  }
+
+  #invoicePrint {
+    position: static !important; /* Changé de absolute à static */
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important; /* Permettre la hauteur automatique */
+    overflow: visible !important; /* Permettre le débordement */
+  }
+
+  /* Masquer les boutons d'action lors de l'impression */
+  .invoice-actions,
+  .footer-actions {
+    display: none !important;
+  }
+
+  /* CORRECTION : Forcer l'affichage du texte du titre */
+  .invoice-title h1 {
+    -webkit-text-fill-color: #4caf50 !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    background: none !important;
+    color: #4caf50 !important;
+    font-size: 1.8rem !important;
+  }
+
+  .invoice-title h1 i {
+    -webkit-text-fill-color: #4caf50 !important;
+    background-clip: initial !important;
+    -webkit-background-clip: initial !important;
+    background: none !important;
+    color: #4caf50 !important;
+  }
+
+  /* Optimiser l'affichage pour l'impression */
+  .invoice-details-container {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Éviter les coupures de page dans les sections importantes */
+  .invoice-section {
+    page-break-inside: avoid;
+  }
+
+  /* Forcer l'affichage normal pour l'impression */
+  body {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* S'assurer que les tableaux se comportent bien sur plusieurs pages */
+  .line-items-table {
+    page-break-inside: auto;
+  }
+
+  .p-datatable {
+    page-break-inside: auto;
+  }
+
+  /* Permettre aux lignes de tableau de se diviser sur les pages si nécessaire */
+  .p-datatable tbody tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+}

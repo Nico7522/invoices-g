@@ -1,14 +1,4 @@
-import {
-  Component,
-  input,
-  computed,
-  ViewChild,
-  ElementRef,
-  viewChild,
-  inject,
-  effect,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, input, computed, ElementRef, viewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -16,17 +6,12 @@ import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
-import { Invoice } from '../models/invoice-interface';
 import { InvoiceService } from '../services/invoice-service';
 import { ErrorCard } from '../../shared/ui/error-card/error-card';
 import { LoadingCard } from '../../shared/ui/loading-card/loading-card';
-
-interface LineItem {
-  description: string;
-  quantity: number;
-  unitPrice: number;
-  total: number;
-}
+import { InvoiceDetails as InvoiceDetailsType } from '../models/invoice-interface';
+import { generatePdfHtml } from '../../shared/utils/generate-pdf';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-invoice-details',
@@ -49,7 +34,7 @@ export class InvoiceDetails {
   id = input.required<string>();
   invoice = this.#invoiceService.getInvoiceDetails(this.id);
   readonly invoicePrint = viewChild.required<ElementRef<HTMLElement>>('invoicePrint');
-  showOtherFees = false;
+  showOtherFees = signal(false);
 
   subtotal = computed(() => {
     return this.invoice
@@ -57,16 +42,24 @@ export class InvoiceDetails {
       ?.carPartsInvoice.reduce((sum, item) => sum + item.totalPriceExclTax, 0);
   });
 
-  toggleOtherFees(): void {
-    this.showOtherFees = !this.showOtherFees;
+  toggleOtherFees() {
+    this.showOtherFees.update((prev) => !prev);
   }
 
-  printInvoice(): void {
+  printInvoice() {
     const printElement = this.invoicePrint().nativeElement;
+    console.log(printElement);
     if (!printElement) {
-      console.error('Élément de facture non trouvé');
       return;
     }
     window.print();
+  }
+
+  generatePdf() {
+    const htmlContent = generatePdfHtml(this.invoice.value() as InvoiceDetailsType);
+    this.#invoiceService
+      .generatePdf(htmlContent, this.invoice.value()?.id.toString())
+      .pipe(take(1))
+      .subscribe();
   }
 }

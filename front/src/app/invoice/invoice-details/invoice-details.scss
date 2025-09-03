@@ -27,6 +27,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+      color: #0a0a0a;
       background: linear-gradient(135deg, #4caf50, #81c784);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -576,43 +577,5 @@
         font-size: 1.25rem;
       }
     }
-  }
-}
-
-@media print {
-  /* Masquer tout sauf le contenu de la facture */
-  body * {
-    visibility: hidden;
-  }
-
-  #invoicePrint,
-  #invoicePrint * {
-    visibility: visible;
-  }
-
-  #invoicePrint {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
-
-  /* Masquer les boutons d'action lors de l'impression */
-  .invoice-actions,
-  .footer-actions {
-    display: none !important;
-  }
-
-  /* Optimiser l'affichage pour l'impression */
-  .invoice-details-container {
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-  }
-
-  /* Éviter les coupures de page dans les sections importantes */
-  .invoice-section {
-    page-break-inside: avoid;
   }
 }

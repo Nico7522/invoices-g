@@ -14,7 +14,7 @@
             <div class="invoice-actions">
                 <p-button label="Imprimer" icon="pi pi-print" severity="secondary" (onClick)="printInvoice()">
                 </p-button>
-                <p-button label="Télécharger PDF" icon="pi pi-download" severity="success">
+                <p-button label="Télécharger PDF" icon="pi pi-download" severity="success" (onClick)="generatePdf()">
                 </p-button>
             </div>
         </div>
@@ -89,14 +89,14 @@
                 <div class="other-fees-section">
                     <div class="other-fees-header" (click)="toggleOtherFees()">
                         <span>
-                            <i class="pi" [class]="showOtherFees ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
+                            <i class="pi" [class]="showOtherFees() ? 'pi-chevron-down' : 'pi-chevron-right'"></i>
                             Autres frais HT
                         </span>
                         <span class="fees-amount">
                             {{ invoice.value().otherFeesExclTax || 0 }}
                         </span>
                     </div>
-                    <div class="other-fees-content" [class.expanded]="showOtherFees">
+                    <div class="other-fees-content" [class.expanded]="showOtherFees()">
                         @if(invoice.value().otherFeesExclTax) {
                         <p>
                             Frais supplémentaires divers (livraison, assurance, etc.)

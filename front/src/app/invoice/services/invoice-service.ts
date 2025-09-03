@@ -1,12 +1,14 @@
-import { Injectable, Signal } from '@angular/core';
+import { inject, Injectable, Signal } from '@angular/core';
 import { Invoice, InvoiceDetails } from '../models/invoice-interface';
-import { httpResource } from '@angular/common/http';
+import { HttpClient, httpResource } from '@angular/common/http';
 import z from 'zod';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class InvoiceService {
+  readonly #httpclient = inject(HttpClient);
   /**
    * Get all invoices
    * @returns A resourceResponse of invoice array
@@ -43,5 +45,21 @@ export class InvoiceService {
         return (response as { data: InvoiceDetails }).data;
       },
     });
+  }
+
+  generatePdf(html: string, invoiceId?: string): Observable<Blob> {
+    return this.#httpclient
+      .post('api/invoices/pdf', { content: html, invoiceId }, { responseType: 'blob' })
+      .pipe(
+        tap((response) => {
+          const url = window.URL.createObjectURL(response);
+          const a = document.createElement('a');
+          a.href = url;
+          // The filename will be set by the backend based on invoiceId
+          a.download = invoiceId ? `facture_${invoiceId}.pdf` : 'invoice.pdf';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        })
+      );
   }
 }
