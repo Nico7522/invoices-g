@@ -74,8 +74,7 @@ export class InvoiceDetails {
     }
 
     const htmlContent = generatePdfHtml(invoice);
-    printWindow.document.open(htmlContent);
-    printWindow.document.write(htmlContent);
+    printWindow.document.writeln(htmlContent);
     printWindow.document.close();
 
     // Attendre que le contenu soit chargé puis imprimer
