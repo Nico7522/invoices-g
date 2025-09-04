@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   convertToPdf,
+  createInvoice,
   getInvoiceDetails,
   getInvoices,
 } from "../controllers/invoice-controller";
@@ -10,5 +11,6 @@ const invoiceRouter = Router();
 
 invoiceRouter.get("/", authenticateUser, getInvoices);
 invoiceRouter.get("/:id", authenticateUser, getInvoiceDetails);
+invoiceRouter.post("/", authenticateUser, createInvoice);
 invoiceRouter.post("/pdf", authenticateUser, convertToPdf);
 export default invoiceRouter;

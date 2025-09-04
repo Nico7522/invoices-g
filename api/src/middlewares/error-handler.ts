@@ -7,9 +7,8 @@ export default function errorHandler(
   res: Response,
   next: NextFunction
 ) {
+  console.log(error);
   if (error instanceof CustomError) {
-    console.log(error);
-
     res.status(error.statusCode).json({
       error: {
         message: error.message,

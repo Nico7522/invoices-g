@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import {
   convertToPdfService,
+  createInvoiceService,
   getInvoiceDetailsService,
   getInvoicesService,
 } from "../services/invoice-service";
 import { log } from "console";
+import { createClientService } from "../services/client-service";
 
 export const getInvoices = async (req: Request, res: Response) => {
   const invoices = await getInvoicesService(req.supabase);
@@ -41,4 +43,16 @@ export const convertToPdf = async (req: Request, res: Response) => {
   res.setHeader("Content-Length", pdfBuffer.length.toString());
 
   return res.status(200).send(pdfBuffer);
+};
+
+export const createInvoice = async (req: Request, res: Response) => {
+  const invoice = req.body.invoice;
+  if (!invoice) {
+    return res.status(400).json({ error: "Invoice data is required" });
+  }
+
+  const id = await createInvoiceService(invoice, req.supabase);
+  return res
+    .status(201)
+    .json({ message: "Invoice created successfully", data: id });
 };

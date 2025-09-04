@@ -26,3 +26,14 @@ interface CarPartInvoice extends CarPart {
   totalPriceExclTax: number;
   quantity: number;
 }
+
+// Used to create or update an invoice
+export interface InvoiceModel {
+  clientId: string;
+  laborCostExclTax: number;
+  otherFeesExclTax: number | null;
+  carParts: {
+    partId: string;
+    quantity: number;
+  }[];
+}

@@ -1,7 +1,7 @@
 import { getAuthClient } from "../config/supabase";
 import CustomError from "../errors/custom-error";
 import { invoiceToInvoiceDto } from "../mappers/invoice-mapper";
-import { InvoiceDetails } from "../models/invoice";
+import { InvoiceDetails, InvoiceModel } from "../models/invoice";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 dotenv.config();
@@ -64,6 +64,65 @@ export const getInvoiceDetailsService = async (
   return invoiceDetails;
 };
 
+export const createInvoiceService = async (
+  invoice: InvoiceModel,
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  // Total price for car parts
+  let totalCarPartsPriceExclTax = 0;
+  let parts = [];
+  for (const item of invoice.carParts) {
+    const { data: carPart, error } = await supabase
+      .from("car_parts")
+      .select("price")
+      .eq("id", item.partId)
+      .single();
+
+    if (error || !carPart) {
+      throw new CustomError({
+        message: `Error fetching car parts`,
+        code: "BAD_REQUEST",
+        statusCode: 400,
+      });
+    }
+    parts.push({
+      car_part_id: item.partId,
+      quantity: item.quantity,
+      total_price_excl_tax: carPart.price * item.quantity,
+    });
+    totalCarPartsPriceExclTax += carPart.price * item.quantity;
+  }
+
+  // Total price excl tax
+  const totalExclTax =
+    totalCarPartsPriceExclTax +
+    invoice.laborCostExclTax +
+    (invoice.otherFeesExclTax || 0);
+
+  // Total price incl tax
+  const taxRate = 1.21; // 20% tax rate
+  const totalInclTax = totalExclTax * taxRate;
+  const taxAmount = totalInclTax - totalExclTax;
+  const { data, error } = await supabase.rpc("insert_invoice_with_parts", {
+    p_client_id: invoice.clientId,
+    p_labor_cost_excl_tax: invoice.laborCostExclTax,
+    p_other_fees_excl_tax: invoice.otherFeesExclTax || 0,
+    p_tax_amount: taxAmount,
+    p_total_excl_tax: totalExclTax,
+    p_total_incl_tax: totalInclTax,
+    p_parts: parts,
+  });
+
+  if (error)
+    throw new CustomError({
+      message: "Error creating invoice",
+      code: "BAD_REQUEST",
+      statusCode: 400,
+    });
+
+  return data;
+};
+
 export const convertToPdfService = async (
   content: string,
   supabase: ReturnType<typeof getAuthClient>
@@ -90,18 +149,14 @@ export const convertToPdfService = async (
     },
     body: JSON.stringify({
       // Use the content as-is if it's already a complete HTML document
-      source: isCompleteHtml
-        ? content
-        : '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Document</title></head><body>' +
-          content +
-          "</body></html>",
+      source: content,
       // Use portrait mode for invoices (better for A4 format)
       landscape: false,
       // Set proper margins for professional invoices
       margin: {
-        top: "30mm",
+        top: "10mm",
         right: "15mm",
-        bottom: "30mm",
+        bottom: "10mm",
         left: "15mm",
       },
       // Set A4 paper format

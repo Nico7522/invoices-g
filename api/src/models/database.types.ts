@@ -165,7 +165,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      insert_invoice_with_parts: {
+        Args: {
+          p_client_id: string
+          p_labor_cost_excl_tax: number
+          p_other_fees_excl_tax: number
+          p_parts: Json
+          p_tax_amount: number
+          p_total_excl_tax: number
+          p_total_incl_tax: number
+        }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
