@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, input, signal } from '@angular/core';
 import {
   ControlContainer,
   FormArray,
@@ -15,6 +15,7 @@ import { Client } from '../../../shared/models/client-interfaces';
 import { ButtonModule } from 'primeng/button';
 import { CurrencyPipe } from '@angular/common';
 import { CarPart } from '../../../shared/models/cart-part-interface';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-invoice-form',
@@ -38,6 +39,7 @@ import { CarPart } from '../../../shared/models/cart-part-interface';
 })
 export class InvoiceForm {
   parentContainer = inject(ControlContainer);
+  readonly #destroyRef = inject(DestroyRef);
   clients = input.required<Client[]>();
   carPartsApi = input.required<CarPart[]>();
   controlKey = input.required<string>();
@@ -69,20 +71,23 @@ export class InvoiceForm {
         otherFeesExclTax: new FormControl('', [Validators.required]),
       })
     );
-    this.parentFormGroup.get(this.controlKey())?.valueChanges.subscribe((value) => {
-      this.totalPartPrice.set(
-        value.carParts.reduce(
-          (acc: number, curr: { partId: string; quantity: number }) =>
-            acc +
-              curr.quantity * this.carPartsApi().find((part) => part.id === curr.partId)!.price ||
-            0,
-          0
-        )
-      );
-      this.totalPriceExclTax.set(
-        this.totalPartPrice() + value.laborCostExclTax + value.otherFeesExclTax
-      );
-    });
+    this.parentFormGroup
+      .get(this.controlKey())
+      ?.valueChanges.pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe((value) => {
+        this.totalPartPrice.set(
+          value.carParts.reduce((acc: number, curr: { partId: string; quantity: number }) => {
+            const part = this.carPartsApi().find((part) => part.id === curr.partId);
+            if (part) {
+              return acc + curr.quantity * part.price;
+            }
+            return acc;
+          }, 0)
+        );
+        this.totalPriceExclTax.set(
+          this.totalPartPrice() + value.laborCostExclTax + value.otherFeesExclTax
+        );
+      });
   }
 
   get carParts(): FormArray {

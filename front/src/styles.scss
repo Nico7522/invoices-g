@@ -422,9 +422,3 @@ body {
     }
   }
 }
-
-/* 
-  Note: Les styles d'impression sont maintenant gérés directement dans la fonction generatePdfHtml
-  qui est utilisée à la fois pour les PDFs et l'impression.
-  Cela garantit une cohérence parfaite entre les deux formats.
-*/

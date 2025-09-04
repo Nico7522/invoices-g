@@ -2,7 +2,7 @@ import { inject, Injectable, Signal } from '@angular/core';
 import { Invoice, InvoiceDetails } from '../models/invoice-interface';
 import { HttpClient, httpResource } from '@angular/common/http';
 import z from 'zod';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +45,14 @@ export class InvoiceService {
         return (response as { data: InvoiceDetails }).data;
       },
     });
+  }
+
+  createInvoice(data: Partial<InvoiceDetails>) {
+    return this.#httpclient.post<{ data: string }>('api/invoices', data).pipe(
+      map((res) => {
+        return { id: res.data };
+      })
+    );
   }
 
   generatePdf(html: string, invoiceId?: string): Observable<Blob> {

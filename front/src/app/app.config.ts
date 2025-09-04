@@ -13,6 +13,31 @@ import Aura from '@primeuix/themes/aura';
 import { errorInterceptor } from './shared/interceptors/error-interceptor';
 import { MessageService } from 'primeng/api';
 import { definePreset } from '@primeuix/themes';
+
+// , {
+//   components: {
+//     datatable: {
+//       colorScheme: {
+//         dark: {
+//           row: {
+//             background: '#262626',
+//           },
+//           headerCell: {
+//             background: '#1a1a1a',
+//             color: '#4caf50',
+//           },
+//         },
+//       },
+//       headerCell: {
+//         padding: '1rem',
+//         borderColor: '2px solid #4caf50',
+//       },
+//       columnTitle: {
+//         fontWeight: '600',
+//       },
+//     },
+//   },
+// })
 export const CustomPreset = definePreset(Aura);
 export const appConfig: ApplicationConfig = {
   providers: [

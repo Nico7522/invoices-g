@@ -21,7 +21,7 @@
 
   .invoice-title {
     h1 {
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: 700;
       margin: 0 0 0.5rem 0;
       display: flex;
@@ -125,7 +125,7 @@
     background: transparent;
 
     .p-datatable-header {
-      background: #1a1a1a;
+      // background: #1a1a1a;
       color: #4caf50;
       font-weight: 600;
       padding: 1rem;
@@ -133,7 +133,7 @@
     }
 
     .p-datatable-thead tr th {
-      background: #1a1a1a;
+      // background: #1a1a1a;
       color: #4caf50;
       font-weight: 600;
       font-size: 0.9rem;
@@ -370,118 +370,19 @@
   }
 }
 
-// Print Styles
-@media print {
-  .invoice-details-container {
-    box-shadow: none;
-    border: 1px solid #333;
-    background: white;
-    color: black;
-    max-width: none;
-    width: 100%;
-    margin: 0;
-    padding: 20px;
-  }
+// Responsive Design
+@media (max-width: 1200px) {
+  .invoice-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
 
-  // Hide action buttons when printing
-  .invoice-actions,
-  .footer-actions {
-    display: none !important;
-  }
-
-  // Hide interactive elements
-  .other-fees-header {
-    cursor: default;
-    background: rgba(0, 0, 0, 0.05);
-    border-color: #ccc;
-  }
-
-  .other-fees-header i {
-    display: none;
-  }
-
-  // Ensure other fees are always expanded for printing
-  .other-fees-content {
-    max-height: none !important;
-    display: block !important;
-  }
-
-  // Improve table printing
-  .line-items-table {
-    border: 1px solid #333;
-    background: white;
-  }
-
-  ::ng-deep .p-datatable {
-    .p-datatable-thead tr th {
-      background: #f5f5f5 !important;
-      color: black !important;
-      border: 1px solid #333 !important;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
+    .invoice-title h1 {
+      font-size: 1rem;
     }
-
-    .p-datatable-tbody tr {
-      background: white !important;
-
-      &:nth-child(even) {
-        background: #f9f9f9 !important;
-      }
-
-      td {
-        border: 1px solid #ddd !important;
-        color: black !important;
-      }
-    }
-  }
-
-  // Improve text contrast for printing
-  .invoice-section h2 {
-    color: black !important;
-  }
-
-  .info-value,
-  .cost-row span:last-child,
-  .total-amount {
-    color: black !important;
-  }
-
-  // Ensure proper page breaks
-  .invoice-section {
-    page-break-inside: avoid;
-  }
-
-  .line-items-table {
-    page-break-inside: avoid;
-  }
-
-  // Hide footer info for cleaner print
-  .footer-info {
-    display: none;
-  }
-
-  // Make sure the total section is prominent
-  .tax-total-section {
-    background: #f0f0f0 !important;
-    border: 2px solid #333 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .total-label {
-    color: black !important;
-  }
-
-  // Remove hover effects and transitions for printing
-  *,
-  *::before,
-  *::after {
-    transition: none !important;
-    animation: none !important;
   }
 }
 
-// Responsive Design
 @media (max-width: 1024px) {
   .invoice-details-container {
     width: 95%;
@@ -494,7 +395,7 @@
     text-align: center;
 
     .invoice-title h1 {
-      font-size: 2rem;
+      font-size: 1rem;
 
       i {
         font-size: 1.5rem;
@@ -554,7 +455,7 @@
   }
 
   .invoice-header .invoice-title h1 {
-    font-size: 1.75rem;
+    font-size: 1rem;
   }
 
   .client-info-grid .info-item {

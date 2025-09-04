@@ -31,6 +31,20 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   styleUrl: './invoice-details.scss',
 })
 export class InvoiceDetails {
+  // customDataTable = {
+  //   colorScheme: {
+  //     dark: {
+  //       row: {
+  //         background: '#262626',
+  //       },
+  //       headerCell: {
+  //         background: '#1a1a1a',
+  //         color: '#4caf50',
+  //         fontWeight: '600',
+  //       },
+  //     },
+  //   },
+  // };
   readonly #invoiceService = inject(InvoiceService);
   pdfLoading = signal(false);
   id = input.required<string>();
@@ -61,6 +75,8 @@ export class InvoiceDetails {
 
     const htmlContent = generatePdfHtml(invoice);
     printWindow.document.open(htmlContent);
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
 
     // Attendre que le contenu soit chargé puis imprimer
     printWindow.onload = () => {
