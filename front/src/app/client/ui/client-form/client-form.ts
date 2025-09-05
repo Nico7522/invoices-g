@@ -9,9 +9,10 @@ import {
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumber } from 'primeng/inputnumber';
+import { Message } from 'primeng/message';
 @Component({
   selector: 'app-client-form',
-  imports: [ReactiveFormsModule, FloatLabel, InputTextModule, InputNumber],
+  imports: [ReactiveFormsModule, FloatLabel, InputTextModule, InputNumber, Message],
   templateUrl: './client-form.html',
   styleUrl: './client-form.scss',
   viewProviders: [

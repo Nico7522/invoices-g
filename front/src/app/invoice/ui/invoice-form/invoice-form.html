@@ -1,21 +1,48 @@
 <div [formGroupName]="controlKey()">
-    <p-floatlabel>
-        <p-select id="clientId" formControlName="clientId" [options]="clients()" optionLabel="name" optionValue="id" />
-        <label for="clientId">Client</label>
-    </p-floatlabel>
+    <div class="input">
+        <p-floatlabel>
+            <p-select id="clientId" formControlName="clientId" [options]="clients()" optionLabel="name"
+                optionValue="id" />
+            <label for="clientId">Client</label>
+        </p-floatlabel>
+        @if (parentFormGroup.get(controlKey())?.get('clientId')?.dirty &&
+        parentFormGroup.get(controlKey())?.get('clientId')?.errors) {
+        <p-message severity="error">Champ requis</p-message>
+        }
+
+    </div>
     <!-- Add car parts -->
     <div formArrayName="carParts">
         @for(part of carParts.controls; track part; let i = $index){
-        <div class="car-parts" [formGroupName]="i">
-            <p-floatlabel>
-                <p-select placeholder="Choisir une pièce" id="name" formControlName="partId" [options]="carPartsApi()"
-                    optionLabel="name" optionValue="id" />
-                <label for="clientId">Pièce</label>
-            </p-floatlabel>
-            <p-floatlabel>
-                <p-inputnumber inputId="quantity" formControlName="quantity" />
-                <label for="quantity">Quantité</label>
-            </p-floatlabel>
+        <div class="car-parts-array" [formGroupName]="i">
+            <div class="part">
+                <p-floatlabel>
+                    <p-select placeholder="Choisir une pièce" id="name" formControlName="partId"
+                        [options]="carPartsApi()" optionLabel="name" optionValue="id" />
+                    <label for="clientId">Pièce</label>
+                </p-floatlabel>
+                <div class="error-container">
+                    @if (parentFormGroup.get([controlKey(), 'carParts', i, 'partId'])?.dirty &&
+                    parentFormGroup.get([controlKey(), 'carParts', i, 'partId'])?.errors) {
+                    <p-message severity="error">Champ requis</p-message>
+                    }
+                </div>
+
+            </div>
+            <div class="part">
+                <p-floatlabel>
+                    <p-inputnumber inputId="quantity" formControlName="quantity" />
+                    <label for="quantity">Quantité</label>
+                </p-floatlabel>
+                <div class="error-container">
+                    @if (parentFormGroup.get([controlKey(), 'carParts', i, 'quantity'])?.dirty &&
+                    parentFormGroup.get([controlKey(), 'carParts', i, 'quantity'])?.errors) {
+                    <p-message severity="error">Champ requis</p-message>
+                    }
+
+                </div>
+
+            </div>
             <p-button icon="pi pi-trash" severity="danger" (onClick)="removeCarPart(i)" />
         </div>
         }
@@ -23,11 +50,18 @@
     </div>
 
 
-    <p-floatlabel>
-        <p-inputnumber inputId="laborCostExclTax" formControlName="laborCostExclTax" mode="currency" currency="EUR" />
-        <label for="laborCostExclTax">Main d'oeuvre</label>
-    </p-floatlabel>
+    <div class="input">
+        <p-floatlabel>
+            <p-inputnumber inputId="laborCostExclTax" formControlName="laborCostExclTax" mode="currency"
+                currency="EUR" />
+            <label for="laborCostExclTax">Main d'oeuvre</label>
+        </p-floatlabel>
+        @if (parentFormGroup.get(controlKey())?.get('laborCostExclTax')?.dirty &&
+        parentFormGroup.get(controlKey())?.get('laborCostExclTax')?.errors) {
+        <p-message severity="error">Valeur invalide</p-message>
+        }
 
+    </div>
     <p-floatlabel>
         <p-inputnumber inputId="otherFeesExclTax" formControlName="otherFeesExclTax" mode="currency" currency="EUR" />
         <label for="otherFeesExclTax">Autres frais</label>

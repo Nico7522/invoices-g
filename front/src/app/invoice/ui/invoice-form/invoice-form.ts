@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { CurrencyPipe } from '@angular/common';
 import { CarPart } from '../../../shared/models/cart-part-interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Message } from 'primeng/message';
 
 @Component({
   selector: 'app-invoice-form',
@@ -27,6 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     SelectModule,
     ButtonModule,
     CurrencyPipe,
+    Message,
   ],
   templateUrl: './invoice-form.html',
   styleUrl: './invoice-form.scss',
@@ -38,7 +40,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   ],
 })
 export class InvoiceForm {
-  parentContainer = inject(ControlContainer);
+  readonly #parentContainer = inject(ControlContainer);
   readonly #destroyRef = inject(DestroyRef);
   clients = input.required<Client[]>();
   carPartsApi = input.required<CarPart[]>();
@@ -53,7 +55,7 @@ export class InvoiceForm {
   totalPriceInclTax = computed(() => this.totalPriceExclTax() * 1.2);
 
   get parentFormGroup(): FormGroup {
-    return this.parentContainer.control as FormGroup;
+    return this.#parentContainer.control as FormGroup;
   }
 
   ngOnInit(): void {
@@ -64,15 +66,16 @@ export class InvoiceForm {
         carParts: new FormArray([
           new FormGroup({
             partId: new FormControl(1, [Validators.required]),
-            quantity: new FormControl('', [Validators.required]),
+            quantity: new FormControl('', [Validators.required, Validators.min(1)]),
           }),
         ]),
-        laborCostExclTax: new FormControl('', [Validators.required]),
-        otherFeesExclTax: new FormControl('', [Validators.required]),
+        laborCostExclTax: new FormControl('', [Validators.required, Validators.min(1)]),
+        otherFeesExclTax: new FormControl(''),
       })
     );
     this.parentFormGroup
       .get(this.controlKey())
+      ?.get('carParts')
       ?.valueChanges.pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((value) => {
         this.totalPartPrice.set(

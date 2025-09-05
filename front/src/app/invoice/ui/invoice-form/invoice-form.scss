@@ -4,7 +4,15 @@ div {
   gap: 3rem;
 }
 
-input {
+.input {
+  gap: 5px;
+}
+.part {
+  align-self: self-start;
+  gap: 5px;
+}
+
+div > input {
   width: 100%;
 }
 
@@ -13,10 +21,10 @@ input {
   width: 100%;
 }
 
-.car-parts {
+.car-parts-array {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: self-start;
   gap: 1rem;
   > :first-child {
     flex: 1;
@@ -46,10 +54,14 @@ input {
 }
 
 @media (max-width: 768px) {
-  .car-parts {
+  .car-parts-array {
     flex-direction: column;
-    align-items: normal;
+    align-items: center;
     gap: 2rem;
+  }
+  .part {
+    align-self: center;
+    width: 100%;
   }
   .total-price {
     flex-direction: column;

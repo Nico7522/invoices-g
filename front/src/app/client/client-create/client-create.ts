@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { ClientForm } from '../../shared/ui/client-form/client-form';
+import { ClientForm } from '../ui/client-form/client-form';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ClientService } from '../services/client-service';

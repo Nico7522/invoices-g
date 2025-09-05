@@ -1,0 +1,52 @@
+<section class="client-form" [formGroupName]="controlKey()">
+    <div>
+        <p-floatlabel>
+            <input pInputText id="name" formControlName="name" autocomplete="off" />
+            <label for="name">Nom</label>
+        </p-floatlabel>
+        @if (parentFormGroup.get(controlKey())?.get('name')?.dirty &&
+        parentFormGroup.get(controlKey())?.get('name')?.errors) {
+        <p-message severity="error">Champ requis</p-message>
+        }
+
+    </div>
+
+    <div>
+
+        <p-floatlabel>
+            <input pInputText id="surname" formControlName="surname" autocomplete="off" />
+            <label for="surname">Prénom</label>
+        </p-floatlabel>
+        @if (parentFormGroup.get(controlKey())?.get('surname')?.dirty &&
+        parentFormGroup.get(controlKey())?.get('surname')?.errors) {
+        <p-message severity="error">Champ requis</p-message>
+        }
+    </div>
+
+    <div>
+
+        <p-floatlabel>
+            <input pInputText id="email" formControlName="email" autocomplete="off" />
+            <label for="email">Email</label>
+        </p-floatlabel>
+        @if (parentFormGroup.get(controlKey())?.get('email')?.dirty) {
+        @if (parentFormGroup.get(controlKey())?.get('email')?.getError('required')) {
+        <p-message severity="error">Champ requis</p-message>
+        }
+        @if (parentFormGroup.get(controlKey())?.get('email')?.getError('email')) {
+        <p-message severity="error">Email invalide</p-message>
+        }
+        }
+    </div>
+    <div>
+
+        <p-floatlabel>
+            <p-inputnumber inputId="phoneNumber" formControlName="phoneNumber" placeholder="0477 12 34 56" />
+            <label for="phoneNumber">Téléphone</label>
+        </p-floatlabel>
+        @if (parentFormGroup.get(controlKey())?.get('phoneNumber')?.dirty &&
+        parentFormGroup.get(controlKey())?.get('phoneNumber')?.errors) {
+        <p-message severity="error">Champ requis</p-message>
+        }
+    </div>
+</section>

@@ -1,7 +1,11 @@
-div {
+.client-form {
   display: flex;
   flex-direction: column;
   gap: 3rem;
+}
+
+.p-floatlabel {
+  margin-bottom: 10px;
 }
 
 input {

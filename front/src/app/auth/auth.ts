@@ -10,6 +10,7 @@ import { PasswordDirective } from '../shared/directives/password-directive';
 import { pipe, take, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '../shared/services/user/user-service';
+import { Message } from 'primeng/message';
 @Component({
   selector: 'app-auth',
   imports: [
@@ -20,6 +21,7 @@ import { UserService } from '../shared/services/user/user-service';
     FloatLabelModule,
     PasswordModule,
     PasswordDirective,
+    Message,
   ],
   templateUrl: './auth.html',
   styleUrl: './auth.scss',

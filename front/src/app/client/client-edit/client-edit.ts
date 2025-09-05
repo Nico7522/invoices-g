@@ -1,6 +1,6 @@
 import { Component, DestroyRef, effect, inject, input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ClientForm } from '../../shared/ui/client-form/client-form';
+import { ClientForm } from '../ui/client-form/client-form';
 import { ButtonModule } from 'primeng/button';
 import { ClientService } from '../services/client-service';
 import { Router, RouterModule } from '@angular/router';

@@ -18,14 +18,12 @@
                         <label for="email" class="form-label">Adresse email</label>
                     </p-floatlabel>
                     @if (emailModel.dirty && emailModel.invalid) {
-                    <div class="field-error">
-                        @if (emailModel.errors?.['required']) {
-                        L'email est requis
-                        }
-                        @if (emailModel.errors?.['email']) {
-                        Format d'email invalide
-                        }
-                    </div>
+                    @if (emailModel.errors?.['required']) {
+                    <p-message severity="error">L'email est requis</p-message>
+                    }
+                    @if (emailModel.errors?.['email']) {
+                    <p-message severity="error">Format d'email invalide</p-message>
+                    }
                     }
                 </div>
 
@@ -37,15 +35,9 @@
                             name="password" />
                         <label for="password" class="form-label">Mot de passe</label>
                     </p-floatlabel>
-                    @if (pwdModel.dirty && pwdModel.invalid) {
-                    <div class="field-error">
-                        @if (pwdModel.errors?.['required']) {
-                        Le mot de passe est requis
-                        }
-                        @if (pwdModel.errors?.['minlength']) {
-                        Le mot de passe doit contenir au moins 8 caractères
-                        }
-                    </div>
+                    @if (pwdModel.dirty && pwdModel.invalid && pwdModel.errors) {
+                    <p-message severity="error">Mot de passe invalide</p-message>
+
                     }
                 </div>
             </div>
