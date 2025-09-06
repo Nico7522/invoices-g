@@ -40,10 +40,9 @@
     </div>
     <div>
 
-        <p-floatlabel>
-            <p-inputnumber inputId="phoneNumber" formControlName="phoneNumber" placeholder="0477 12 34 56" />
+        <p-inputmask mask="+32 999 99 99 99" formControlName="phoneNumber" placeholder="+32 4xx xx xx xx">
             <label for="phoneNumber">Téléphone</label>
-        </p-floatlabel>
+        </p-inputmask>
         @if (parentFormGroup.get(controlKey())?.get('phoneNumber')?.dirty &&
         parentFormGroup.get(controlKey())?.get('phoneNumber')?.errors) {
         <p-message severity="error">Champ requis</p-message>
