@@ -13,7 +13,8 @@
         <div class="form-actions">
             <p-button type="button" label="Retour" icon="pi pi-angle-double-left" severity="secondary"
                 routerLink="../" />
-            <p-button type="submit" label="Enregistrer" icon="pi pi-check" [disabled]="clientEditForm.invalid" />
+            <p-button type="submit" label="Enregistrer" icon="pi pi-check" [disabled]="clientEditForm.invalid"
+                [loading]="loading()" />
         </div>
     </form>
 </section>

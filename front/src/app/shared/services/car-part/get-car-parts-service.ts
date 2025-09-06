@@ -7,12 +7,10 @@ import { carPartSchema } from '../../schemas/car-part-schema';
   providedIn: 'root',
 })
 export class GetCarPartsService {
-  getCarParts() {
-    return httpResource<CarPart[]>(() => 'api/car-parts', {
-      defaultValue: [] as CarPart[],
-      parse: (response) => {
-        return carPartSchema.array().parse((response as { data: CarPart[] }).data);
-      },
-    });
-  }
+  carParts = httpResource<CarPart[]>(() => 'api/car-parts', {
+    defaultValue: [] as CarPart[],
+    parse: (response) => {
+      return carPartSchema.array().parse((response as { data: CarPart[] }).data);
+    },
+  });
 }

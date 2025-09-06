@@ -17,12 +17,12 @@
                 <p-button label="Imprimer" icon="pi pi-print" severity="secondary" (onClick)="printInvoice()">
                 </p-button>
 
-                <p-button [label]=" pdfLoading() ? 'Téléchargement en cours...' :'Télécharger PDF'"
-                    icon="pi pi-download" severity="success" (onClick)="generatePdf()" [disabled]="pdfLoading()">
-                    @if(pdfLoading()){
-                    <p-progress-spinner ariaLabel="loading" [style]="{ width: '20px', height: '20px' }"
-                        strokeWidth="7" />
-                    }
+                <p-button label="Télécharger PDF" icon="pi pi-download" severity="success" (onClick)="generatePdf()"
+                    [loading]="pdfLoading()">
+
+                </p-button>
+                <p-button label="Modifier" icon="pi pi-pencil" severity="info"
+                    [routerLink]="['/invoices', invoice.value().id, 'edit']">
                 </p-button>
             </div>
         </div>

@@ -13,8 +13,8 @@
                 <div class="field-group">
                     <p-floatlabel>
                         <input #emailModel="ngModel" [invalid]="emailModel.dirty && emailModel.invalid" email
-                            type="email" required pInputText id="email" autocomplete="email" [(ngModel)]="email"
-                            name="email" class="form-input" />
+                            type="email" required pInputText id="email" autocomplete="email" ngModel name="email"
+                            class="form-input" />
                         <label for="email" class="form-label">Adresse email</label>
                     </p-floatlabel>
                     @if (emailModel.dirty && emailModel.invalid) {
@@ -30,9 +30,8 @@
                 <div class="field-group">
                     <p-floatlabel>
                         <p-password #pwdModel="ngModel" [invalid]="pwdModel.dirty && pwdModel.invalid" required
-                            [minlength]="8" passwordValidator type="password" [inputStyle]="{'width': '100%'}"
-                            [(ngModel)]="password" inputId="password" [feedback]="false" [toggleMask]="true"
-                            name="password" />
+                            [minlength]="8" passwordValidator type="password" [inputStyle]="{'width': '100%'}" ngModel
+                            inputId="password" [feedback]="false" [toggleMask]="true" name="password" />
                         <label for="password" class="form-label">Mot de passe</label>
                     </p-floatlabel>
                     @if (pwdModel.dirty && pwdModel.invalid && pwdModel.errors) {
@@ -44,7 +43,7 @@
 
             <div class="form-actions">
                 <p-button [disabled]="loginForm.invalid" label="Se connecter" type="submit" icon="pi pi-sign-in"
-                    [loading]="false" />
+                    [loading]="loading()" />
             </div>
 
             <div class="form-footer">

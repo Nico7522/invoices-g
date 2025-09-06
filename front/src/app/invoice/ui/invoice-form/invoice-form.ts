@@ -4,6 +4,7 @@ import {
   FormArray,
   FormControl,
   FormGroup,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -17,6 +18,7 @@ import { CurrencyPipe } from '@angular/common';
 import { CarPart } from '../../../shared/models/cart-part-interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Message } from 'primeng/message';
+import { InvoiceFormGroup } from '../../models/invoice-form-interface';
 
 @Component({
   selector: 'app-invoice-form',
@@ -61,21 +63,27 @@ export class InvoiceForm {
   ngOnInit(): void {
     this.parentFormGroup.addControl(
       this.controlKey(),
-      new FormGroup({
-        clientId: new FormControl('', [Validators.required]),
+      new FormGroup<InvoiceFormGroup>({
+        clientId: new FormControl('', { nonNullable: true, validators: Validators.required }),
         carParts: new FormArray([
           new FormGroup({
-            partId: new FormControl(1, [Validators.required]),
-            quantity: new FormControl('', [Validators.required, Validators.min(1)]),
+            partId: new FormControl('', { nonNullable: true, validators: Validators.required }),
+            quantity: new FormControl(0, {
+              nonNullable: true,
+              validators: [Validators.required, Validators.min(1)],
+            }),
           }),
         ]),
-        laborCostExclTax: new FormControl('', [Validators.required, Validators.min(1)]),
-        otherFeesExclTax: new FormControl(''),
+        laborCostExclTax: new FormControl(0, {
+          nonNullable: true,
+          validators: [Validators.required, Validators.min(1)],
+        }),
+        otherFeesExclTax: new FormControl(0),
       })
     );
+
     this.parentFormGroup
       .get(this.controlKey())
-      ?.get('carParts')
       ?.valueChanges.pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe((value) => {
         this.totalPartPrice.set(
@@ -87,6 +95,7 @@ export class InvoiceForm {
             return acc;
           }, 0)
         );
+
         this.totalPriceExclTax.set(
           this.totalPartPrice() + value.laborCostExclTax + value.otherFeesExclTax
         );
@@ -110,6 +119,4 @@ export class InvoiceForm {
   removeCarPart(index: number) {
     this.carParts.removeAt(index);
   }
-
-  constructor() {}
 }

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, input } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ClientForm } from '../ui/client-form/client-form';
 import { ButtonModule } from 'primeng/button';
@@ -22,23 +22,28 @@ export class ClientEdit {
   id = input.required<string>();
   client = this.#clientService.getClient(this.id);
   clientEditForm = new FormGroup({});
-
+  loading = signal(false);
   onSubmit() {
     if (this.clientEditForm.valid) {
       const clientValue = this.clientEditForm.get('client')?.value;
       if (clientValue) {
         const client: Client = clientValue as Client;
+        this.loading.set(true);
         this.#clientService
           .updateClient(this.id(), client)
           .pipe(takeUntilDestroyed(this.#destroyRef))
           .subscribe({
             next: (res) => {
+              this.loading.set(false);
               this.#messageService.add({
                 severity: 'success',
                 summary: 'Succès',
                 detail: 'Client modifié avec succès',
               });
               this.#router.navigate(['/clients', this.id()]);
+            },
+            error: (err) => {
+              this.loading.set(false);
             },
           });
       }

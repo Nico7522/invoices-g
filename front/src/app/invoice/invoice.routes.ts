@@ -15,6 +15,10 @@ export default [
         loadComponent: () =>
           import('./invoice-details/invoice-details').then((m) => m.InvoiceDetails),
       },
+      {
+        path: ':id/edit',
+        loadComponent: () => import('./invoice-edit/invoice-edit').then((m) => m.InvoiceEdit),
+      },
     ],
   },
 ];

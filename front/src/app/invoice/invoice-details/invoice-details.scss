@@ -371,7 +371,7 @@
 }
 
 // Responsive Design
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
   .invoice-header {
     flex-direction: column;
     gap: 1rem;
@@ -419,6 +419,10 @@
     padding: 1rem;
   }
 
+  .invoice-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
   .invoice-section h2 {
     font-size: 1.25rem;
   }

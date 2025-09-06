@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { ClientForm } from '../ui/client-form/client-form';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -20,24 +20,28 @@ export class ClientCreate {
   readonly #messageService = inject(MessageService);
   readonly #router = inject(Router);
   readonly createClientForm = new FormGroup({});
-
+  loading = signal(false);
   onSubmit() {
     if (this.createClientForm.valid) {
       const clientValue = this.createClientForm.get('client')?.value;
       if (clientValue) {
         const client: Client = clientValue as Client;
-
+        this.loading.set(true);
         this.#clientService
           .createClient(client)
           .pipe(takeUntilDestroyed(this.#destroyRef))
           .subscribe({
             next: (res) => {
+              this.loading.set(false);
               this.#messageService.add({
                 severity: 'success',
                 summary: 'Succès',
                 detail: 'Client créé avec succès',
               });
               this.#router.navigate(['/clients']);
+            },
+            error: (err) => {
+              this.loading.set(false);
             },
           });
       }

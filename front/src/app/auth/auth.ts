@@ -11,6 +11,7 @@ import { pipe, take, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '../shared/services/user/user-service';
 import { Message } from 'primeng/message';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @Component({
   selector: 'app-auth',
   imports: [
@@ -22,6 +23,7 @@ import { Message } from 'primeng/message';
     PasswordModule,
     PasswordDirective,
     Message,
+    ProgressSpinnerModule,
   ],
   templateUrl: './auth.html',
   styleUrl: './auth.scss',
@@ -29,17 +31,19 @@ import { Message } from 'primeng/message';
 export class Auth {
   readonly #authService = inject(AuthService);
   readonly #router = inject(Router);
-  email = signal('');
-  password = signal('');
-
+  loading = signal(false);
   login(loginForm: NgForm) {
-    this.#authService
-      .login(loginForm.value.email, loginForm.value.password)
-      .pipe(take(1))
-      .subscribe({
-        next: () => {
-          this.#router.navigate(['/']);
-        },
-      });
+    if (loginForm.valid) {
+      this.loading.set(true);
+      this.#authService
+        .login(loginForm.value.email, loginForm.value.password)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.loading.set(false);
+            this.#router.navigate(['/']);
+          },
+        });
+    }
   }
 }
