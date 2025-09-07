@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, model, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientForm } from '../ui/client-form/client-form';
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +19,7 @@ import {
   styleUrl: './client-edit.scss',
 })
 export class ClientEdit {
+  test2 = '';
   readonly #clientService = inject(ClientService);
   readonly #destroyRef = inject(DestroyRef);
   readonly #messageService = inject(MessageService);

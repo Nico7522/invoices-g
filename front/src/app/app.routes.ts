@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { Auth } from './auth/auth';
 import { Home } from './home/home';
+import { NotFound } from './shared/ui/not-found/not-found';
 import { loginGuard } from './shared/guards/login-guard';
 
 export const routes: Routes = [
@@ -22,5 +23,9 @@ export const routes: Routes = [
     path: 'clients',
     loadChildren: () => import('./client/client.routes'),
     canActivate: [loginGuard],
+  },
+  {
+    path: '**',
+    component: NotFound,
   },
 ];

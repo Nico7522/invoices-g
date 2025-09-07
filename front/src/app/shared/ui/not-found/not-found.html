@@ -1,0 +1,51 @@
+<section class="not-found-container">
+    <div class="error-header">
+        <h1 class="error-title">
+            <i class="pi pi-exclamation-triangle"></i>
+            404
+        </h1>
+        <p class="error-subtitle">Page non trouvée</p>
+        <p class="error-description">
+            Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
+        </p>
+    </div>
+
+    <div class="error-card">
+        <div class="error-content">
+            <div class="error-icon">
+                <i class="pi pi-search"></i>
+            </div>
+            <h2 class="error-message">Oups ! Cette page semble avoir disparu</h2>
+            <p class="error-details">
+                Il semble que vous ayez suivi un lien incorrect ou que la page ait été supprimée.
+                Ne vous inquiétez pas, nous allons vous aider à retrouver votre chemin !
+            </p>
+        </div>
+
+        <div class="error-actions">
+            <p-button label="Retour à l'accueil" icon="pi pi-home" routerLink="/"
+                styleClass="p-button-primary home-button">
+            </p-button>
+
+            <p-button label="Voir les factures" icon="pi pi-receipt" routerLink="/invoices"
+                styleClass="p-button-secondary">
+            </p-button>
+
+            <p-button label="Voir les clients" icon="pi pi-users" routerLink="/clients" styleClass="p-button-secondary">
+            </p-button>
+        </div>
+
+        <div class="error-footer">
+            <p class="error-help">
+                Si vous pensez que cela est une erreur, veuillez
+                <a href="#" class="support-link">contacter le support</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="background-decoration">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+    </div>
+</section>
