@@ -177,6 +177,19 @@ export type Database = {
         }
         Returns: string
       }
+      update_invoice_with_parts: {
+        Args: {
+          p_client_id: string
+          p_invoice_id: string
+          p_labor_cost_excl_tax: number
+          p_other_fees_excl_tax: number
+          p_parts: Json
+          p_tax_amount: number
+          p_total_excl_tax: number
+          p_total_incl_tax: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

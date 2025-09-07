@@ -123,6 +123,65 @@ export const createInvoiceService = async (
   return data;
 };
 
+export const updateInvoiceService = async (
+  id: string,
+  invoice: InvoiceModel,
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  // Total price for car parts
+  let totalCarPartsPriceExclTax = 0;
+  let parts = [];
+  for (const item of invoice.carParts) {
+    const { data: carPart, error } = await supabase
+      .from("car_parts")
+      .select("price")
+      .eq("id", item.partId)
+      .single();
+
+    if (error || !carPart) {
+      throw new CustomError({
+        message: `Error fetching car parts`,
+        code: "BAD_REQUEST",
+        statusCode: 400,
+      });
+    }
+    parts.push({
+      car_part_id: item.partId,
+      quantity: item.quantity,
+      total_price_excl_tax: carPart.price * item.quantity,
+    });
+    totalCarPartsPriceExclTax += carPart.price * item.quantity;
+  }
+
+  // Total price excl tax
+  const totalExclTax =
+    totalCarPartsPriceExclTax +
+    invoice.laborCostExclTax +
+    (invoice.otherFeesExclTax || 0);
+
+  // Total price incl tax
+  const taxRate = 1.21; // 20% tax rate
+  const totalInclTax = totalExclTax * taxRate;
+  const taxAmount = totalInclTax - totalExclTax;
+  const { error } = await supabase.rpc("update_invoice_with_parts", {
+    p_invoice_id: id,
+    p_client_id: invoice.clientId,
+    p_labor_cost_excl_tax: invoice.laborCostExclTax,
+    p_other_fees_excl_tax: invoice.otherFeesExclTax || 0,
+    p_tax_amount: taxAmount,
+    p_total_excl_tax: totalExclTax,
+    p_total_incl_tax: totalInclTax,
+    p_parts: parts,
+  });
+
+  if (error)
+    throw new CustomError({
+      message: "Error updating invoice",
+      code: "BAD_REQUEST",
+      statusCode: 400,
+    });
+};
+
 export const convertToPdfService = async (
   content: string,
   supabase: ReturnType<typeof getAuthClient>

@@ -4,6 +4,7 @@ import {
   createInvoiceService,
   getInvoiceDetailsService,
   getInvoicesService,
+  updateInvoiceService,
 } from "../services/invoice-service";
 import { log } from "console";
 import { createClientService } from "../services/client-service";
@@ -55,4 +56,15 @@ export const createInvoice = async (req: Request, res: Response) => {
   return res
     .status(201)
     .json({ message: "Invoice created successfully", data: id });
+};
+
+export const updateInvoice = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const invoice = req.body.invoice;
+  if (!invoice || !id) {
+    return res.status(400).json({ error: "Invoice data is required" });
+  }
+
+  await updateInvoiceService(id, invoice, req.supabase);
+  return res.status(200).json({ message: "Invoice updated successfully" });
 };
