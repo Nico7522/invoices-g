@@ -9,6 +9,10 @@ import {
   InvoiceFormGroup,
   InvoiceForm as InvoiceFormInterface,
 } from '../models/invoice-form-interface';
+import { InvoiceDetails } from '../models/invoice-interface';
+import { take } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-invoice-edit',
   imports: [InvoiceForm, ReactiveFormsModule, ButtonModule],
@@ -19,7 +23,8 @@ export class InvoiceEdit {
   readonly #invoiceService = inject(InvoiceService);
   readonly #getClientService = inject(GetClientService);
   readonly #carPartsService = inject(GetCarPartsService);
-
+  readonly #messageService = inject(MessageService);
+  readonly #router = inject(Router);
   id = input.required<string>();
   invoice = this.#invoiceService.getInvoiceDetails(this.id);
   clients = this.#getClientService.getClients();
@@ -44,7 +49,24 @@ export class InvoiceEdit {
     }),
   });
 
-  onSubmit() {}
+  onSubmit() {
+    if (this.editInvoiceForm.valid) {
+      this.#invoiceService
+        .updateInvoice(this.id(), this.editInvoiceForm.value as Partial<InvoiceDetails>)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.#messageService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Facture mise à jour avec succès',
+            });
+            this.#router.navigate(['/invoices', this.id()]);
+          },
+          error: () => {},
+        });
+    }
+  }
 
   ngOnInit() {}
 

@@ -55,6 +55,10 @@ export class InvoiceService {
     );
   }
 
+  updateInvoice(id: string, data: Partial<InvoiceDetails>) {
+    return this.#httpclient.put(`api/invoices/${id}`, data);
+  }
+
   generatePdf(html: string, invoiceId?: string): Observable<Blob> {
     return this.#httpclient
       .post('api/invoices/pdf', { content: html, invoiceId }, { responseType: 'blob' })
