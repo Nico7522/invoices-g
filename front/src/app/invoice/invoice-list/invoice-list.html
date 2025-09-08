@@ -24,9 +24,11 @@
                 </td>
 
                 <td>
-                    <p-button severity="danger" label="Supprimer" icon="pi pi-trash" #deleteBtn />
+                    <p-button severity="danger" label="Supprimer" icon="pi pi-trash" #deleteBtn
+                        (onClick)="confirmDelete($event, invoice.id)" />
                 </td>
             </tr>
         </ng-template>
     </p-table>
 </section>
+<p-confirmpopup />

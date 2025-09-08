@@ -50,6 +50,7 @@ export class ClientList {
               });
             },
           });
+        this.clients.reload();
       },
       reject: () => {
         this.#messageService.add({

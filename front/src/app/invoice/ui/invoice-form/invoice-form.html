@@ -17,8 +17,8 @@
         <div class="car-parts-array" [formGroupName]="i">
             <div class="part">
                 <p-floatlabel>
-                    <p-select placeholder="Choisir une pièce" id="name" formControlName="partId"
-                        [options]="carPartsApi()" optionLabel="name" optionValue="id" />
+                    <p-select id="name" formControlName="partId" [options]="carPartsApi()" optionLabel="name"
+                        optionValue="id" />
                     <label for="clientId">Pièce</label>
                 </p-floatlabel>
                 <div class="error-container">

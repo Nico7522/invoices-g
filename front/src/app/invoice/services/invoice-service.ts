@@ -59,6 +59,10 @@ export class InvoiceService {
     return this.#httpclient.put(`api/invoices/${id}`, data);
   }
 
+  deleteInvoice(id: string) {
+    return this.#httpclient.delete(`api/invoices/${id}`);
+  }
+
   generatePdf(html: string, invoiceId?: string): Observable<Blob> {
     return this.#httpclient
       .post('api/invoices/pdf', { content: html, invoiceId }, { responseType: 'blob' })
