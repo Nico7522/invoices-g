@@ -27,7 +27,7 @@ export class InvoiceCreate {
   readonly #router = inject(Router);
   readonly #messageService = inject(MessageService);
   readonly #destroyRef = inject(DestroyRef);
-  clients = this.#getClientService.getClients();
+  clients = this.#getClientService.clients;
   carParts = this.#getCarPartsService.carParts;
   createInvoiceForm = new FormGroup<InvoiceFormInterface>({
     invoice: new FormGroup<InvoiceFormGroup>({

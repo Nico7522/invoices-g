@@ -8,21 +8,19 @@ import { clientSchema } from '../../schemas/client-schema';
 })
 export class GetClientService {
   /**
-   * Get all clients
-   * Method in shared folder because it is used in both client and invoice
-   * @returns A resourceResponse of client array
+   * Retrieve all clients
+   * httpResource in shared folder because it is used in both client and invoice
+   * @returns A httpResourceRef of client array
    */
-  getClients() {
-    return httpResource<Client[]>(
-      () => ({
-        url: 'api/clients',
-      }),
-      {
-        defaultValue: [] as Client[],
-        parse: (response) => {
-          return clientSchema.array().parse((response as { data: Client[] }).data);
-        },
-      }
-    );
-  }
+  clients = httpResource<Client[]>(
+    () => ({
+      url: 'api/clients',
+    }),
+    {
+      defaultValue: [] as Client[],
+      parse: (response) => {
+        return clientSchema.array().parse((response as { data: Client[] }).data);
+      },
+    }
+  );
 }

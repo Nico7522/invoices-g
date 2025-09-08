@@ -20,7 +20,7 @@ export class ClientList {
   readonly #confirmationService = inject(ConfirmationService);
   readonly #messageService = inject(MessageService);
   readonly #destroyRef = inject(DestroyRef);
-  clients = this.#getClientService.getClients();
+  clients = this.#getClientService.clients;
 
   confirmDelete(event: Event, id: string) {
     this.#confirmationService.confirm({

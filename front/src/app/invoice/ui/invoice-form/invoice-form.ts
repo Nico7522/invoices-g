@@ -61,27 +61,6 @@ export class InvoiceForm {
   }
 
   ngOnInit(): void {
-    this.parentFormGroup.addControl(
-      this.controlKey(),
-      new FormGroup<InvoiceFormGroup>({
-        clientId: new FormControl('', { nonNullable: true, validators: Validators.required }),
-        carParts: new FormArray([
-          new FormGroup({
-            partId: new FormControl('', { nonNullable: true, validators: Validators.required }),
-            quantity: new FormControl(0, {
-              nonNullable: true,
-              validators: [Validators.required, Validators.min(1)],
-            }),
-          }),
-        ]),
-        laborCostExclTax: new FormControl(0, {
-          nonNullable: true,
-          validators: [Validators.required, Validators.min(1)],
-        }),
-        otherFeesExclTax: new FormControl(0),
-      })
-    );
-
     this.parentFormGroup
       .get(this.controlKey())
       ?.valueChanges.pipe(takeUntilDestroyed(this.#destroyRef))
@@ -110,8 +89,11 @@ export class InvoiceForm {
   addCarPart() {
     this.carParts.push(
       new FormGroup({
-        partId: new FormControl(1, [Validators.required]),
-        quantity: new FormControl('', [Validators.required]),
+        partId: new FormControl('', { nonNullable: true, validators: Validators.required }),
+        quantity: new FormControl(0, {
+          nonNullable: true,
+          validators: [Validators.required, Validators.min(1)],
+        }),
       })
     );
   }

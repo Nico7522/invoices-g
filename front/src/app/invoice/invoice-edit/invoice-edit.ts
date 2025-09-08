@@ -1,4 +1,13 @@
-import { Component, effect, inject, input } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  effect,
+  inject,
+  input,
+  OnInit,
+  signal,
+  untracked,
+} from '@angular/core';
 import { InvoiceForm } from '../ui/invoice-form/invoice-form';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GetClientService } from '../../shared/services/client/get-client-service';
@@ -19,7 +28,7 @@ import { Router } from '@angular/router';
   templateUrl: './invoice-edit.html',
   styleUrl: './invoice-edit.scss',
 })
-export class InvoiceEdit {
+export class InvoiceEdit implements OnInit {
   readonly #invoiceService = inject(InvoiceService);
   readonly #getClientService = inject(GetClientService);
   readonly #carPartsService = inject(GetCarPartsService);
@@ -27,8 +36,9 @@ export class InvoiceEdit {
   readonly #router = inject(Router);
   id = input.required<string>();
   invoice = this.#invoiceService.getInvoiceDetails(this.id);
-  clients = this.#getClientService.getClients();
+  clients = this.#getClientService.clients;
   carParts = this.#carPartsService.carParts;
+  initialized = false;
   editInvoiceForm = new FormGroup<InvoiceFormInterface>({
     invoice: new FormGroup<InvoiceFormGroup>({
       clientId: new FormControl('', { nonNullable: true, validators: Validators.required }),
@@ -49,6 +59,8 @@ export class InvoiceEdit {
     }),
   });
 
+  ngOnInit(): void {}
+
   onSubmit() {
     if (this.editInvoiceForm.valid) {
       this.#invoiceService
@@ -68,34 +80,41 @@ export class InvoiceEdit {
     }
   }
 
-  ngOnInit() {}
-
   constructor() {
     effect(() => {
-      let carParts = this.editInvoiceForm.get('invoice')?.get('carParts') as FormArray;
-      this.editInvoiceForm.patchValue({
-        invoice: {
-          clientId: this.invoice.value()?.clientId,
-          laborCostExclTax: this.invoice.value()?.laborCostExclTax,
-          otherFeesExclTax: this.invoice.value()?.otherFeesExclTax,
-        },
-      });
-      if (this.invoice.hasValue()) {
-        while (carParts.controls.length < this.invoice.value().carPartsInvoice.length) {
-          carParts.push(
-            new FormGroup({
-              partId: new FormControl(''),
-              quantity: new FormControl(''),
-            })
+      if (this.invoice.hasValue() && !this.initialized) {
+        this.initialized = true;
+        let carParts = this.editInvoiceForm.get('invoice')?.get('carParts') as FormArray;
+        this.editInvoiceForm.patchValue({
+          invoice: {
+            clientId: this.invoice.value().clientId,
+            laborCostExclTax: this.invoice.value().laborCostExclTax,
+            otherFeesExclTax: this.invoice.value().otherFeesExclTax,
+          },
+        });
+        if (this.invoice.hasValue()) {
+          while (carParts.controls.length < this.invoice.value().carPartsInvoice.length) {
+            carParts.push(
+              new FormGroup({
+                partId: new FormControl('', {
+                  nonNullable: true,
+                  validators: Validators.required,
+                }),
+                quantity: new FormControl(0, {
+                  nonNullable: true,
+                  validators: [Validators.required, Validators.min(1)],
+                }),
+              })
+            );
+          }
+
+          carParts.patchValue(
+            this.invoice.value().carPartsInvoice.map((carPart) => ({
+              partId: carPart.id,
+              quantity: carPart.quantity,
+            }))
           );
         }
-        this.editInvoiceForm;
-        carParts.patchValue(
-          this.invoice.value().carPartsInvoice.map((carPart) => ({
-            partId: carPart.id,
-            quantity: carPart.quantity,
-          }))
-        );
       }
     });
   }
