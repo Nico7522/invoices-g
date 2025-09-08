@@ -5,6 +5,12 @@ import { InvoiceDetails, InvoiceModel } from "../models/invoice";
 import fetch from "node-fetch";
 import dotenv from "dotenv";
 dotenv.config();
+
+/**
+ * Retrieves all invoices from the database
+ * @param supabase - The supabase client
+ * @returns  - Array of invoices using the invoiceToInvoiceDto mapper
+ */
 export const getInvoicesService = async (
   supabase: ReturnType<typeof getAuthClient>
 ) => {
@@ -20,6 +26,12 @@ export const getInvoicesService = async (
   return data.map(invoiceToInvoiceDto);
 };
 
+/**
+ * Retrieves invoice details from the database, including car parts and client info
+ * @param id - The id of the invoice to return
+ * @param supabase - The supabase client
+ * @returns - The invoice details with car parts and client info
+ */
 export const getInvoiceDetailsService = async (
   id: string,
   supabase: ReturnType<typeof getAuthClient>
@@ -64,6 +76,12 @@ export const getInvoiceDetailsService = async (
   return invoiceDetails;
 };
 
+/**
+ * Create an invoice and insert it into the database
+ * @param invoice - The invoice to create
+ * @param supabase - The supabase client
+ * @returns - Id of the created invoice
+ */
 export const createInvoiceService = async (
   invoice: InvoiceModel,
   supabase: ReturnType<typeof getAuthClient>
@@ -123,6 +141,13 @@ export const createInvoiceService = async (
   return data;
 };
 
+/**
+ * Update an invoice and insert it into the database
+ * @param id - The id of the invoice to update
+ * @param invoice - The new invoice data
+ * @param supabase - The supabase client
+ * @returns - Nothing
+ */
 export const updateInvoiceService = async (
   id: string,
   invoice: InvoiceModel,
@@ -177,6 +202,26 @@ export const updateInvoiceService = async (
   if (error)
     throw new CustomError({
       message: "Error updating invoice",
+      code: "BAD_REQUEST",
+      statusCode: 400,
+    });
+};
+
+/**
+ * Delete an invoice
+ * @param id - The id of the invoice to delete
+ * @param supabase - The supabase client
+ * @returns - Nothing
+ */
+export const deleteInvoiceService = async (
+  id: string,
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  const { error } = await supabase.from("invoices").delete().eq("id", id);
+
+  if (error)
+    throw new CustomError({
+      message: "Error deleting invoice",
       code: "BAD_REQUEST",
       statusCode: 400,
     });

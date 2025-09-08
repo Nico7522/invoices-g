@@ -2,12 +2,11 @@ import { Request, Response } from "express";
 import {
   convertToPdfService,
   createInvoiceService,
+  deleteInvoiceService,
   getInvoiceDetailsService,
   getInvoicesService,
   updateInvoiceService,
 } from "../services/invoice-service";
-import { log } from "console";
-import { createClientService } from "../services/client-service";
 
 export const getInvoices = async (req: Request, res: Response) => {
   const invoices = await getInvoicesService(req.supabase);
@@ -67,4 +66,15 @@ export const updateInvoice = async (req: Request, res: Response) => {
 
   await updateInvoiceService(id, invoice, req.supabase);
   return res.status(200).json({ message: "Invoice updated successfully" });
+};
+
+export const deleteInvoice = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  console.log(id);
+
+  if (!id) {
+    return res.status(400).json({ error: "Invoice ID is required" });
+  }
+  await deleteInvoiceService(id, req.supabase);
+  return res.status(200).json({ message: "Invoice deleted successfully" });
 };

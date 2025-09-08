@@ -105,6 +105,7 @@ export const deleteClientService = async (
   supabase: ReturnType<typeof getAuthClient>
 ) => {
   const { error } = await supabase.from("clients").delete().eq("id", id);
+  console.log(error);
 
   if (error)
     throw new CustomError({
