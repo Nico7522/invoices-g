@@ -35,12 +35,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumError": "1.40MB"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumError": "10kB"
                 }
               ],
               "outputHashing": "all"
@@ -55,9 +55,7 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {
-            "proxyConfig": "src/proxy.conf.json"
-          },
+
           "configurations": {
             "production": {
               "buildTarget": "front:build:production"

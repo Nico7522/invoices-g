@@ -39,9 +39,9 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           });
           break;
       }
-      if (err.status === 401) {
-        router.navigate(['/auth/login']);
-      }
+      // if (err.status === 401) {
+      //   router.navigate(['/auth/login']);
+      // }
       return throwError(() => err);
     })
   );

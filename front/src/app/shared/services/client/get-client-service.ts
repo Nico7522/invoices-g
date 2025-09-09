@@ -14,7 +14,7 @@ export class GetClientService {
    */
   clients = httpResource<Client[]>(
     () => ({
-      url: 'api/clients',
+      url: 'clients',
     }),
     {
       defaultValue: [] as Client[],

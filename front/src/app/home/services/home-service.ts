@@ -13,7 +13,7 @@ export class HomeService {
    * Retrieve all clients and return the last 5
    * @returns A httpResourceRef with the last 5 invoices
    */
-  lastInvoices = httpResource<Invoice[]>(() => 'api/invoices', {
+  lastInvoices = httpResource<Invoice[]>(() => 'invoices', {
     parse: (response) => {
       return invoiceSchema
         .array()
@@ -26,7 +26,7 @@ export class HomeService {
    * Retrieve all clients and return the last 5
    * @returns A httpResourceRef with the last 5 clients
    */
-  lastClients = httpResource<Client[]>(() => 'api/clients', {
+  lastClients = httpResource<Client[]>(() => 'clients', {
     parse: (response) => {
       return clientSchema
         .array()

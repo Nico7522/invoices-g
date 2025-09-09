@@ -15,7 +15,7 @@ export class ClientService {
    * @returns A resourceResponse with the client
    */
   getClient(id: Signal<string>) {
-    return httpResource<Client>(() => (id() ? `api/clients/${id()}` : undefined), {
+    return httpResource<Client>(() => (id() ? `clients/${id()}` : undefined), {
       parse: (response) => {
         return clientSchema.parse((response as { data: Client }).data);
       },
@@ -28,7 +28,7 @@ export class ClientService {
    * @returns A Observable with the response of the request
    */
   createClient(client: Partial<Client>) {
-    return this.#httpClient.post<unknown>('api/clients', client);
+    return this.#httpClient.post<unknown>('clients', client);
   }
 
   /**
@@ -38,7 +38,7 @@ export class ClientService {
    * @returns A Observable with the response of the request
    */
   updateClient(id: string, client: Partial<Client>) {
-    return this.#httpClient.put<unknown>(`api/clients/${id}`, client);
+    return this.#httpClient.put<unknown>(`clients/${id}`, client);
   }
 
   /**
@@ -47,6 +47,6 @@ export class ClientService {
    * @returns A Observable with the response of the request
    */
   deleteClient(id: string) {
-    return this.#httpClient.delete<unknown>(`api/clients/${id}`);
+    return this.#httpClient.delete<unknown>(`clients/${id}`);
   }
 }

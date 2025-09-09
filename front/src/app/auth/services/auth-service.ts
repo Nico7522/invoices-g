@@ -17,12 +17,9 @@ export class AuthService {
    * @returns A object with the user info
    */
   login(email: string, password: string): Observable<UserInfo> {
-    return this.#httpClient.post<{ user: UserInfo }>('api/auth/login', { email, password }).pipe(
-      tap((response) => {
-        console.log(response);
-      }),
-      map((response) => response.user)
-    );
+    return this.#httpClient
+      .post<{ user: UserInfo }>('auth/login', { email, password })
+      .pipe(map((response) => response.user));
   }
 
   logout() {

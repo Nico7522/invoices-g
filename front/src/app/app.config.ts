@@ -13,6 +13,8 @@ import Aura from '@primeuix/themes/aura';
 import { errorInterceptor } from './shared/interceptors/error-interceptor';
 import { MessageService } from 'primeng/api';
 import { definePreset } from '@primeuix/themes';
+import { provideConfig } from '../config/provide-config';
+import { urlInterceptor } from './shared/interceptors/url-interceptor';
 
 // , {
 //   components: {
@@ -44,7 +46,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(withFetch(), withInterceptors([errorInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([urlInterceptor, errorInterceptor])),
+    provideConfig(),
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {

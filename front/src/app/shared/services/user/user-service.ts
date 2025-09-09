@@ -19,7 +19,7 @@ export class UserService {
    * @returns a Observable with the user info or null
    */
   getUser(): Observable<UserInfo | null> {
-    return this.#httpClient.get<{ user: UserInfo | null }>('/api/auth/user').pipe(
+    return this.#httpClient.get<{ user: UserInfo | null }>('auth/user').pipe(
       map((value) => {
         if (value.user) {
           const user = this.#userSchema.parse(value.user);

@@ -16,7 +16,7 @@ export class InvoiceService {
   getInvoices() {
     return httpResource<Invoice[]>(
       () => ({
-        url: 'api/invoices',
+        url: 'invoices',
       }),
       {
         defaultValue: [] as Invoice[],
@@ -33,7 +33,7 @@ export class InvoiceService {
    * @returns A resourceResponse with the invoice details
    */
   getInvoiceDetails(id: Signal<string>) {
-    return httpResource<InvoiceDetails>(() => (id() ? `api/invoices/${id()}` : undefined), {
+    return httpResource<InvoiceDetails>(() => (id() ? `invoices/${id()}` : undefined), {
       parse: (response) => {
         return (response as { data: InvoiceDetails }).data;
       },
@@ -41,7 +41,7 @@ export class InvoiceService {
   }
 
   createInvoice(data: Partial<InvoiceDetails>) {
-    return this.#httpclient.post<{ data: string }>('api/invoices', data).pipe(
+    return this.#httpclient.post<{ data: string }>('invoices', data).pipe(
       map((res) => {
         return { id: res.data };
       })
@@ -49,16 +49,16 @@ export class InvoiceService {
   }
 
   updateInvoice(id: string, data: Partial<InvoiceDetails>) {
-    return this.#httpclient.put(`api/invoices/${id}`, data);
+    return this.#httpclient.put(`invoices/${id}`, data);
   }
 
   deleteInvoice(id: string) {
-    return this.#httpclient.delete(`api/invoices/${id}`);
+    return this.#httpclient.delete(`invoices/${id}`);
   }
 
   generatePdf(html: string, invoiceId?: string): Observable<Blob> {
     return this.#httpclient
-      .post('api/invoices/pdf', { content: html, invoiceId }, { responseType: 'blob' })
+      .post('invoices/pdf', { content: html, invoiceId }, { responseType: 'blob' })
       .pipe(
         tap((response) => {
           const url = window.URL.createObjectURL(response);
