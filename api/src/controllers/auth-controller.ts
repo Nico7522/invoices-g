@@ -15,16 +15,17 @@ export const login = async (req: Request, res: Response) => {
   res.cookie("sb-access-token", session.token.accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "none",
     maxAge: 1000 * 60 * 60,
   });
 
   res.cookie("sb-refresh-token", session.token.refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
+
   res.status(200).json({ user: session.user });
 };
 export const logout = async (req: Request, res: Response) => {
