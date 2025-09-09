@@ -10,7 +10,7 @@ import { InvoiceService } from '../services/invoice-service';
 import { ErrorCard } from '../../shared/ui/error-card/error-card';
 import { LoadingCard } from '../../shared/ui/loading-card/loading-card';
 import { generatePdfHtml } from '../../shared/utils/generate-pdf';
-import { InvoiceDetails as InvoiceDetailsType } from '../models/invoice-interface';
+import { InvoiceDetails as InvoiceDetailsType } from '../../shared/models/invoice-interface';
 import { take } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @Component({

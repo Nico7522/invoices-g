@@ -1,1 +1,186 @@
-<p>home works!</p>
+<div class="home-container">
+    <!-- Header Section -->
+    <div class="home-header">
+        <h1 class="home-title">
+            <i class="pi pi-home"></i>
+            Tableau de Bord
+        </h1>
+        <p class="home-subtitle">Vue d'ensemble de votre activité</p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+        <p-card class="stat-card">
+            <ng-template #header>
+                <div class="stat-header">
+                    <i class="pi pi-file-o stat-icon invoices"></i>
+                    <h3>Factures</h3>
+                </div>
+            </ng-template>
+            <div class="stat-content">
+                <div class="stat-number">{{ totalInvoices() }}</div>
+                <div class="stat-label">Total des factures</div>
+                <div class="stat-detail">
+                    <span class="revenue">{{ formatCurrency(totalRevenue()) }}</span>
+                    <span class="revenue-label">Chiffre d'affaires TTC</span>
+                </div>
+            </div>
+        </p-card>
+
+        <p-card class="stat-card">
+            <ng-template #header>
+                <div class="stat-header">
+                    <i class="pi pi-users stat-icon clients"></i>
+                    <h3>Clients</h3>
+                </div>
+            </ng-template>
+            <div class="stat-content">
+                <div class="stat-number">{{ totalClients() }}</div>
+                <div class="stat-label">Total des clients</div>
+                <div class="stat-detail">
+                    <span class="average">{{ formatCurrency(averageInvoiceValue()) }}</span>
+                    <span class="average-label">Panier moyen</span>
+                </div>
+            </div>
+        </p-card>
+
+        <p-card class="stat-card">
+            <ng-template #header>
+                <div class="stat-header">
+                    <i class="pi pi-euro stat-icon revenue"></i>
+                    <h3>Revenus</h3>
+                </div>
+            </ng-template>
+            <div class="stat-content">
+                <div class="stat-number">{{ formatCurrency(totalRevenueExclTax()) }}</div>
+                <div class="stat-label">Chiffre d'affaires HT</div>
+                <div class="stat-detail">
+                    <span class="tax">{{ formatCurrency(totalRevenue() - totalRevenueExclTax()) }}</span>
+                    <span class="tax-label">TVA collectée</span>
+                </div>
+            </div>
+        </p-card>
+
+        <p-card class="stat-card">
+            <ng-template #header>
+                <div class="stat-header">
+                    <i class="pi pi-chart-line stat-icon trend"></i>
+                    <h3>Tendance</h3>
+                </div>
+            </ng-template>
+            <div class="stat-content">
+                <div class="trend-content">
+                    @if (monthlyRevenue().length > 0) {
+                    <div class="trend-chart">
+                        @for (month of monthlyRevenue(); track month.month) {
+                        <div class="trend-bar">
+                            <div class="bar" [style.height.%]="getBarHeight(month.revenue)"></div>
+                            <span class="month-label">{{ formatMonth(month.month) }}</span>
+                        </div>
+                        }
+                    </div>
+                    } @else {
+                    <div class="no-data">Aucune donnée disponible</div>
+                    }
+                </div>
+            </div>
+        </p-card>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <h2 class="section-title">
+            <i class="pi pi-bolt"></i>
+            Actions Rapides
+        </h2>
+        <div class="action-buttons">
+            <p-button [routerLink]="['/invoices', 'create']" label="Nouvelle Facture" icon="pi pi-plus"
+                class="action-btn primary" />
+            <p-button [routerLink]="['/clients', 'create']" label="Nouveau Client" icon="pi pi-user-plus"
+                class="action-btn secondary" />
+            <p-button [routerLink]="['/invoices']" label="Voir Factures" icon="pi pi-list"
+                class="action-btn tertiary" />
+            <p-button [routerLink]="['/clients']" label="Voir Clients" icon="pi pi-users"
+                class="action-btn quaternary" />
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+        <div class="activity-section">
+            <h2 class="section-title">
+                <i class="pi pi-clock"></i>
+                Factures Récentes
+            </h2>
+            @if (recentInvoices().length > 0) {
+            <p-table [value]="recentInvoices()" [tableStyle]="{ 'background-color': 'transparent' }"
+                class="recent-table">
+                <ng-template #header>
+                    <tr>
+                        <th>ID</th>
+                        <th>Montant TTC</th>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-invoice>
+                    <tr>
+                        <td class="invoice-id">{{ invoice.id }}</td>
+                        <td class="invoice-amount">{{ formatCurrency(invoice.totalInclTax) }}</td>
+                        <td class="invoice-date">{{ formatDate(invoice.createdAt) }}</td>
+                        <td>
+                            <p-tag [value]="getInvoiceStatus(invoice)" [severity]="getInvoiceSeverity(invoice)" />
+                        </td>
+                        <td>
+                            <p-button severity="info" [routerLink]="['/invoices', invoice.id]" label="Voir"
+                                icon="pi pi-eye" size="small" />
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            } @else {
+            <div class="empty-state">
+                <i class="pi pi-inbox"></i>
+                <p>Aucune facture récente</p>
+            </div>
+            }
+        </div>
+
+        <div class="activity-section">
+            <h2 class="section-title">
+                <i class="pi pi-users"></i>
+                Clients Récents
+            </h2>
+            @if (recentClients().length > 0) {
+            <p-table [value]="recentClients()" [tableStyle]="{ 'background-color': 'transparent' }"
+                class="recent-table">
+                <ng-template #header>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Actions</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-client>
+                    <tr>
+                        <td class="client-name">{{ client.name }} {{ client.surname }}</td>
+                        <td class="client-email">{{ client.email }}</td>
+                        <td class="client-phone">{{ client.phoneNumber }}</td>
+                        <td>
+                            <p-button severity="info" [routerLink]="['/clients', client.id]" label="Voir"
+                                icon="pi pi-eye" size="small" />
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            } @else {
+            <div class="empty-state">
+                <i class="pi pi-inbox"></i>
+                <p>Aucun client récent</p>
+            </div>
+            }
+        </div>
+    </div>
+</div>

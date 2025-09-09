@@ -1,5 +1,4 @@
-import { InvoiceDetails } from '../../invoice/models/invoice-interface';
-
+import { InvoiceDetails } from '../models/invoice-interface';
 /**
  * Generate the HTML content for the PDF
  * @param invoice - The invoice details

@@ -1,4 +1,4 @@
-import { CarPart } from '../../shared/models/cart-part-interface';
+import { CarPart } from './cart-part-interface';
 
 export interface Invoice {
   id: string;
@@ -22,7 +22,7 @@ export interface InvoiceDetails extends Invoice {
   carPartsInvoice: CarPartInvoice[];
 }
 
-interface CarPartInvoice extends CarPart {
+export interface CarPartInvoice extends CarPart {
   totalPriceExclTax: number;
   quantity: number;
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable, Signal } from '@angular/core';
-import { Invoice, InvoiceDetails } from '../models/invoice-interface';
 import { HttpClient, httpResource } from '@angular/common/http';
-import z from 'zod';
+import { Invoice, InvoiceDetails } from '../../shared/models/invoice-interface';
+import { invoiceSchema } from '../../shared/schemas/invoice-schema';
 import { map, Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -21,18 +21,11 @@ export class InvoiceService {
       {
         defaultValue: [] as Invoice[],
         parse: (response) => {
-          return this.#invoiceSchema.array().parse((response as { data: Invoice[] }).data);
+          return invoiceSchema.array().parse((response as { data: Invoice[] }).data);
         },
       }
     );
   }
-
-  readonly #invoiceSchema = z.object({
-    id: z.string(),
-    totalExclTax: z.number(),
-    createdAt: z.string(),
-    totalInclTax: z.number(),
-  });
 
   /**
    * Get invoice details

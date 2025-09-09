@@ -7,9 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { PasswordModule } from 'primeng/password';
 import { PasswordDirective } from '../shared/directives/password-directive';
-import { pipe, take, tap } from 'rxjs';
+import { take } from 'rxjs';
 import { Router } from '@angular/router';
-import { UserService } from '../shared/services/user/user-service';
 import { Message } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 @Component({
@@ -42,6 +41,9 @@ export class Auth {
           next: () => {
             this.loading.set(false);
             this.#router.navigate(['/']);
+          },
+          error: () => {
+            this.loading.set(false);
           },
         });
     }

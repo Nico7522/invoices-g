@@ -1,14 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  computed,
-  effect,
-  inject,
-  input,
-  OnInit,
-  signal,
-  untracked,
-} from '@angular/core';
+import { Component, effect, inject, input, signal, untracked } from '@angular/core';
 import { InvoiceForm } from '../ui/invoice-form/invoice-form';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GetClientService } from '../../shared/services/client/get-client-service';
@@ -19,7 +9,7 @@ import {
   InvoiceFormGroup,
   InvoiceForm as InvoiceFormInterface,
 } from '../models/invoice-form-interface';
-import { InvoiceDetails } from '../models/invoice-interface';
+import { InvoiceDetails } from '../../shared/models/invoice-interface';
 import { take } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';

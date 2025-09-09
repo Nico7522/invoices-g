@@ -12,7 +12,7 @@ import {
   InvoiceFormGroup,
   InvoiceForm as InvoiceFormInterface,
 } from '../models/invoice-form-interface';
-import { InvoiceDetails } from '../models/invoice-interface';
+import { InvoiceDetails } from '../../shared/models/invoice-interface';
 
 @Component({
   selector: 'app-invoice-create',
