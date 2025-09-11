@@ -63,14 +63,14 @@ export const authenticateUser = async (
           res.cookie("sb-access-token", refreshData.session.access_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             maxAge: 1000 * 60 * 60, // 1 heure
           });
 
           res.cookie("sb-refresh-token", refreshData.session.refresh_token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             maxAge: 1000 * 60 * 60 * 24 * 7, // 1 semaine
           });
 

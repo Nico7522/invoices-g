@@ -52,7 +52,7 @@ export const getUserService = async (accessToken: string) => {
       title: error.name,
       detail: error.message || "Unauthorized",
       instance: "/api/auth/getUser",
-      status: error.status || 401,
+      status: 401,
     });
 
   return { id: user?.id, email: user?.email };
