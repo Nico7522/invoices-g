@@ -3,8 +3,6 @@ import CustomError from "../errors/custom-error";
 import { invoiceToInvoiceDto } from "../mappers/invoice-mapper";
 import { InvoiceDetails, InvoiceModel } from "../models/invoice";
 import fetch from "node-fetch";
-import dotenv from "dotenv";
-dotenv.config();
 
 /**
  * Retrieves all invoices from the database

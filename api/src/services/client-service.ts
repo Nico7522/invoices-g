@@ -1,4 +1,3 @@
-import e from "express";
 import { getAuthClient } from "../config/supabase";
 import CustomError from "../errors/custom-error";
 import {

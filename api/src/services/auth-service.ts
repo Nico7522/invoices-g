@@ -1,5 +1,5 @@
 import e from "express";
-import supabase, { getAnonClient, getAuthClient } from "../config/supabase";
+import supabase, { getAuthClient } from "../config/supabase";
 import { authToSession } from "../mappers/auth-mapper";
 import CustomError from "../errors/custom-error";
 
