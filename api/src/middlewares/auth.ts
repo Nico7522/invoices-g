@@ -31,7 +31,15 @@ export const authenticateUser = async (
     const refreshToken = req.cookies["sb-refresh-token"];
 
     if (!accessToken) {
-      return res.status(401).json({ error: "No access token provided" });
+      return res.status(401).json({
+        error: {
+          type: "about:blank",
+          title: "Unauthorized",
+          detail: "No access token provided",
+          instance: "/",
+          status: 401,
+        },
+      });
     }
 
     // Créer un client avec le token de l'utilisateur
@@ -73,7 +81,15 @@ export const authenticateUser = async (
         }
       }
 
-      return res.status(401).json({ error: "Invalid or expired token" });
+      return res.status(401).json({
+        error: {
+          type: "about:blank",
+          title: "Unauthorized",
+          detail: "Invalid or expired token",
+          instance: "/",
+          status: 401,
+        },
+      });
     }
 
     // Attacher le client et l'utilisateur à la requête
@@ -83,6 +99,14 @@ export const authenticateUser = async (
     next();
   } catch (error) {
     console.error("Authentication error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({
+      error: {
+        type: "about:blank",
+        title: "Server Error",
+        detail: "Internal server error",
+        instance: "/",
+        status: 500,
+      },
+    });
   }
 };

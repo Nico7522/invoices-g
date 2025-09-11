@@ -1,21 +1,29 @@
-class CustomError<C extends string> extends Error {
-  message: string;
-  statusCode: number;
-  code?: C;
+class CustomError extends Error {
+  type: string;
+  title: string;
+  status: number;
+  detail: string;
+  instance: string;
 
   constructor({
-    message,
-    statusCode,
-    code,
+    type,
+    title,
+    detail,
+    instance,
+    status,
   }: {
-    message: string;
-    statusCode: number;
-    code?: C;
+    type: string;
+    title: string;
+    detail: string;
+    instance: string;
+    status: number;
   }) {
     super();
-    this.message = message;
-    this.statusCode = statusCode;
-    this.code = code;
+    this.type = type;
+    this.title = title;
+    this.detail = detail;
+    this.instance = instance;
+    this.status = status;
   }
 }
 

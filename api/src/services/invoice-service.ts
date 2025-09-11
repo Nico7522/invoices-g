@@ -16,9 +16,11 @@ export const getInvoicesService = async (
 
   if (error)
     throw new CustomError({
-      message: "Error fetching invoices",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: "Error fetching invoices",
+      detail: error.message || "Error fetching invoices",
+      instance: "/api/invoices",
+      status: 400,
     });
 
   return data.map(invoiceToInvoiceDto);
@@ -42,11 +44,15 @@ export const getInvoiceDetailsService = async (
     .eq("id", id)
     .single();
 
+  console.log("error from service", error);
+
   if (error)
     throw new CustomError({
-      message: "Error fetching invoice details",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: "Error fetching invoice details",
+      detail: error.message || "Error fetching invoice details",
+      instance: `/api/invoices/${id}`,
+      status: 404,
     });
 
   // TODO: faire un mapper
@@ -96,9 +102,11 @@ export const createInvoiceService = async (
 
     if (error || !carPart) {
       throw new CustomError({
-        message: `Error fetching car parts`,
-        code: "BAD_REQUEST",
-        statusCode: 400,
+        type: "about:blank",
+        title: "Error fetching car parts",
+        detail: "A car part was not found",
+        instance: "/api/invoices",
+        status: 400,
       });
     }
     parts.push({
@@ -131,9 +139,11 @@ export const createInvoiceService = async (
 
   if (error)
     throw new CustomError({
-      message: "Error creating invoice",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error creating invoice",
+      instance: "/api/invoices",
+      status: 400,
     });
 
   return data;
@@ -163,9 +173,11 @@ export const updateInvoiceService = async (
 
     if (error || !carPart) {
       throw new CustomError({
-        message: `Error fetching car parts`,
-        code: "BAD_REQUEST",
-        statusCode: 400,
+        type: "about:blank",
+        title: error.name,
+        detail: "A car part was not found",
+        instance: "/api/invoices",
+        status: 400,
       });
     }
     parts.push({
@@ -197,11 +209,15 @@ export const updateInvoiceService = async (
     p_parts: parts,
   });
 
+  console.log("error from service", error);
+
   if (error)
     throw new CustomError({
-      message: "Error updating invoice",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error updating invoice",
+      instance: `/api/invoices/${id}`,
+      status: 400,
     });
 };
 
@@ -219,9 +235,11 @@ export const deleteInvoiceService = async (
 
   if (error)
     throw new CustomError({
-      message: "Error deleting invoice",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error deleting invoice",
+      instance: `/api/invoices/${id}`,
+      status: 400,
     });
 };
 
@@ -232,9 +250,11 @@ export const convertToPdfService = async (
   const isLogedIn = await supabase.auth.getUser();
   if (!isLogedIn.data.user) {
     throw new CustomError({
-      message: "Unauthorized",
-      code: "UNAUTHORIZED",
-      statusCode: 401,
+      type: "about:blank",
+      title: "Unauthorized",
+      detail: "Unauthorized",
+      instance: "/api/invoices/pdf",
+      status: 401,
     });
   }
 
@@ -270,9 +290,11 @@ export const convertToPdfService = async (
     const errorText = await response.text();
     console.error("PDFShift error:", errorText);
     throw new CustomError({
-      message: `Error converting to PDF: ${response.statusText}`,
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: "Error converting to PDF",
+      detail: response.statusText,
+      instance: "/api/invoices/pdf",
+      status: 400,
     });
   }
 

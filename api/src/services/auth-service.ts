@@ -16,9 +16,11 @@ export const loginService = async (email: string, password: string) => {
   });
   if (error)
     throw new CustomError({
-      message: "Invalid credentials",
-      code: "BAD_REQUEST",
-      statusCode: error.status || 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Email or password is incorrect",
+      instance: "/api/auth/login",
+      status: error.status || 400,
     });
 
   return authToSession(data);
@@ -30,9 +32,11 @@ export const logoutService = async (
   const { error } = await supabase.auth.signOut();
   if (error)
     throw new CustomError({
-      message: "Error during logout",
-      code: error.code,
-      statusCode: error.status || 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error during logout",
+      instance: "/api/auth/logout",
+      status: error.status || 400,
     });
 };
 
@@ -44,9 +48,11 @@ export const getUserService = async (accessToken: string) => {
 
   if (error)
     throw new CustomError({
-      message: "Unauthorized",
-      code: "UNAUTHORIZED",
-      statusCode: 401,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Unauthorized",
+      instance: "/api/auth/getUser",
+      status: error.status || 401,
     });
 
   return { id: user?.id, email: user?.email };

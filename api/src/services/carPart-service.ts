@@ -9,9 +9,11 @@ export const getCarPartsService = async (
 
   if (error) {
     throw new CustomError({
-      message: "Error fetching car parts",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error fetching car parts",
+      instance: "/api/carParts",
+      status: 400,
     });
   }
   return data.map((carPart) => ({

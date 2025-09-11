@@ -17,9 +17,11 @@ export const getClientsService = async (
   const { data, error } = await supabase.from("clients").select("*");
   if (error)
     throw new CustomError({
-      message: "Error fetching clients",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error fetching clients",
+      instance: "/api/clients",
+      status: 400,
     });
 
   return data.map(clientToClienDto);
@@ -42,9 +44,11 @@ export const getClientByIdService = async (
 
   if (error)
     throw new CustomError({
-      message: "Error fetching client",
-      code: "NOT_FOUND",
-      statusCode: 404,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error fetching client",
+      instance: `/api/clients/${id}`,
+      status: 404,
     });
   return clientToClienDto(data);
 };
@@ -63,9 +67,11 @@ export const createClientService = async (
 
   if (error)
     throw new CustomError({
-      message: "Error creating client",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error creating client",
+      instance: "/api/clients",
+      status: 400,
     });
 };
 
@@ -87,9 +93,11 @@ export const updateClientService = async (
 
   if (error)
     throw new CustomError({
-      message: "Error updating client",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error updating client",
+      instance: `/api/clients/${id}`,
+      status: 400,
     });
 };
 
@@ -108,8 +116,10 @@ export const deleteClientService = async (
 
   if (error)
     throw new CustomError({
-      message: "Error deleting client",
-      code: "BAD_REQUEST",
-      statusCode: 400,
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error deleting client",
+      instance: `/api/clients/${id}`,
+      status: 400,
     });
 };

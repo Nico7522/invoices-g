@@ -8,10 +8,13 @@ export default function errorHandler(
   next: NextFunction
 ) {
   if (error instanceof CustomError) {
-    res.status(error.statusCode).json({
+    res.status(error.status).json({
       error: {
-        message: error.message,
-        code: error.code,
+        type: error.type,
+        title: error.title,
+        detail: error.detail,
+        instance: error.instance,
+        status: error.status,
       },
     });
     return;
@@ -19,7 +22,11 @@ export default function errorHandler(
 
   res.status(500).json({
     error: {
-      message: "An error occurred. Please view logs for more details",
+      type: "about:blank",
+      title: "Server Error",
+      detail: "An error occurred. Please try again later.",
+      instance: req.url,
+      status: 500,
     },
   });
   next();

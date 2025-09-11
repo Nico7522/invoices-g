@@ -46,9 +46,17 @@ export const convertToPdf = async (req: Request, res: Response) => {
 };
 
 export const createInvoice = async (req: Request, res: Response) => {
-  const invoice = req.body.invoice;
+  const invoice = req.body?.invoice;
   if (!invoice) {
-    return res.status(400).json({ error: "Invoice data is required" });
+    return res.status(400).json({
+      error: {
+        type: "about:blank",
+        title: "Bad Request",
+        detail: "Invoice data is required",
+        instance: "/api/invoices",
+        status: 400,
+      },
+    });
   }
 
   const id = await createInvoiceService(invoice, req.supabase);
@@ -59,9 +67,17 @@ export const createInvoice = async (req: Request, res: Response) => {
 
 export const updateInvoice = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const invoice = req.body.invoice;
+  const invoice = req.body?.invoice;
   if (!invoice || !id) {
-    return res.status(400).json({ error: "Invoice data is required" });
+    return res.status(400).json({
+      error: {
+        type: "about:blank",
+        title: "Bad Request",
+        detail: "Invoice data is required",
+        instance: "/api/invoices",
+        status: 400,
+      },
+    });
   }
 
   await updateInvoiceService(id, invoice, req.supabase);
@@ -70,10 +86,17 @@ export const updateInvoice = async (req: Request, res: Response) => {
 
 export const deleteInvoice = async (req: Request, res: Response) => {
   const { id } = req.params;
-  console.log(id);
 
   if (!id) {
-    return res.status(400).json({ error: "Invoice ID is required" });
+    return res.status(400).json({
+      error: {
+        type: "about:blank",
+        title: "Bad Request",
+        detail: "Invoice id is required",
+        instance: "/api/invoices",
+        status: 400,
+      },
+    });
   }
   await deleteInvoiceService(id, req.supabase);
   return res.status(200).json({ message: "Invoice deleted successfully" });
