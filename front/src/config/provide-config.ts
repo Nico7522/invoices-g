@@ -1,4 +1,9 @@
-import { InjectionToken, makeEnvironmentProviders, provideAppInitializer } from '@angular/core';
+import {
+  InjectionToken,
+  isDevMode,
+  makeEnvironmentProviders,
+  provideAppInitializer,
+} from '@angular/core';
 
 interface CustomConfig {
   production: boolean;
@@ -12,7 +17,9 @@ export function provideConfig() {
 
   return makeEnvironmentProviders([
     provideAppInitializer(async () => {
-      config = await fetch('assets/config.json')
+      console.log(isDevMode());
+      let url = isDevMode() ? 'assets/config-dev.json' : '/assets/config-prod.json';
+      config = await fetch(url)
         .then((res) => {
           return res.json();
         })
