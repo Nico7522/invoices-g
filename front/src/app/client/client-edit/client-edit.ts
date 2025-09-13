@@ -11,6 +11,7 @@ import {
   ClientFormGroup,
   ClientForm as ClientFormInterface,
 } from '../models/client-form-interface';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-client-edit',
@@ -24,6 +25,7 @@ export class ClientEdit {
   readonly #destroyRef = inject(DestroyRef);
   readonly #messageService = inject(MessageService);
   readonly #router = inject(Router);
+  readonly #title = inject(Title);
   id = input.required<string>();
   client = this.#clientService.getClient(this.id);
   clientEditForm = new FormGroup<ClientFormInterface>({
@@ -72,9 +74,14 @@ export class ClientEdit {
 
   constructor() {
     effect(() => {
-      this.clientEditForm.patchValue({
-        client: this.client.value() as Client,
-      });
+      if (this.client.hasValue()) {
+        this.#title.setTitle(
+          `Modifier le client | ${this.client.value().name} ${this.client.value().surname}`
+        );
+        this.clientEditForm.patchValue({
+          client: this.client.value() as Client,
+        });
+      }
     });
   }
 }

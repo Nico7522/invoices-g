@@ -9,6 +9,7 @@ export default [
       {
         path: 'create',
         loadComponent: () => import('./invoice-create/invoice-create').then((m) => m.InvoiceCreate),
+        title: 'Créer une facture',
       },
       {
         path: ':id',

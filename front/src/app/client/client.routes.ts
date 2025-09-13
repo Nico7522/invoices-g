@@ -9,6 +9,7 @@ export default [
       {
         path: 'create',
         loadComponent: () => import('./client-create/client-create').then((m) => m.ClientCreate),
+        title: 'Créer un client',
       },
       {
         path: ':id',

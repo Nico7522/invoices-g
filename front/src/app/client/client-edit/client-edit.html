@@ -8,7 +8,7 @@
     </div>
 
     <form [formGroup]="clientEditForm" class="form" (ngSubmit)="onSubmit()">
-        <app-client-form [(test)]="test2" controlKey="client" label="Client"></app-client-form>
+        <app-client-form controlKey="client" label="Client"></app-client-form>
 
         <div class="form-actions">
             <p-button type="button" label="Retour" icon="pi pi-angle-double-left" severity="secondary"
@@ -18,5 +18,3 @@
         </div>
     </form>
 </section>
-
-<p>Test2 value: {{ test2 }}</p>

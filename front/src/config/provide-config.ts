@@ -17,7 +17,6 @@ export function provideConfig() {
 
   return makeEnvironmentProviders([
     provideAppInitializer(async () => {
-      console.log(isDevMode());
       let url = isDevMode() ? 'assets/config-dev.json' : '/assets/config-prod.json';
       config = await fetch(url)
         .then((res) => {

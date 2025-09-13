@@ -1,4 +1,13 @@
-import { Component, input, computed, ElementRef, viewChild, inject, signal } from '@angular/core';
+import {
+  Component,
+  input,
+  computed,
+  ElementRef,
+  viewChild,
+  inject,
+  signal,
+  effect,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -13,6 +22,7 @@ import { generatePdfHtml } from '../../shared/utils/generate-pdf';
 import { InvoiceDetails as InvoiceDetailsType } from '../../shared/models/invoice-interface';
 import { take } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-invoice-details',
   imports: [
@@ -46,6 +56,7 @@ export class InvoiceDetails {
   //   },
   // };
   readonly #invoiceService = inject(InvoiceService);
+  readonly #title = inject(Title);
   pdfLoading = signal(false);
   id = input.required<string>();
   invoice = this.#invoiceService.getInvoiceDetails(this.id);
@@ -56,6 +67,18 @@ export class InvoiceDetails {
       .value()
       ?.carPartsInvoice.reduce((sum, item) => sum + item.totalPriceExclTax, 0);
   });
+
+  constructor() {
+    effect(() => {
+      if (this.invoice.hasValue()) {
+        this.#title.setTitle(
+          `Détails de la facture | ${this.invoice.value().clientInfo.name} ${
+            this.invoice.value().clientInfo.surname
+          }`
+        );
+      }
+    });
+  }
 
   toggleOtherFees() {
     this.showOtherFees.update((prev) => !prev);

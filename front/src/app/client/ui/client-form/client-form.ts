@@ -24,7 +24,6 @@ import { InputMaskModule } from 'primeng/inputmask';
   ],
 })
 export class ClientForm implements OnInit {
-  test = model('');
   parentContainer = inject(ControlContainer);
   controlKey = input.required<string>();
   label = input.required<string>();
@@ -50,9 +49,5 @@ export class ClientForm implements OnInit {
 
   ngOnDestroy() {
     this.parentFormGroup.removeControl(this.controlKey());
-  }
-
-  setTest() {
-    this.test.set('Hello from ClientForm');
   }
 }

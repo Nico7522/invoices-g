@@ -12,10 +12,11 @@ import {
 import { InvoiceDetails } from '../../shared/models/invoice-interface';
 import { take } from 'rxjs';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-invoice-edit',
-  imports: [InvoiceForm, ReactiveFormsModule, ButtonModule],
+  imports: [InvoiceForm, ReactiveFormsModule, ButtonModule, RouterModule],
   templateUrl: './invoice-edit.html',
   styleUrl: './invoice-edit.scss',
 })
@@ -25,6 +26,7 @@ export class InvoiceEdit {
   readonly #carPartsService = inject(GetCarPartsService);
   readonly #messageService = inject(MessageService);
   readonly #router = inject(Router);
+  readonly #title = inject(Title);
   id = input.required<string>();
   invoice = this.#invoiceService.getInvoiceDetails(this.id);
   clients = this.#getClientService.clients;
@@ -80,6 +82,13 @@ export class InvoiceEdit {
 
         if (this.invoice.hasValue()) {
           this.initialized.set(true);
+
+          this.#title.setTitle(
+            `Modifier la facture | ${this.invoice.value().clientInfo.name} ${
+              this.invoice.value().clientInfo.surname
+            }`
+          );
+
           let carParts = this.editInvoiceForm.get('invoice')?.get('carParts') as FormArray;
           this.editInvoiceForm.patchValue({
             invoice: {
