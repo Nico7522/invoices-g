@@ -2,6 +2,11 @@ import { getAuthClient } from "../config/supabase";
 import CustomError from "../errors/custom-error";
 import { CarPart } from "../models/carPart";
 
+/**
+ * Get all car parts
+ * @param supabase - The supabase client
+ * @returns The car parts
+ */
 export const getCarPartsService = async (
   supabase: ReturnType<typeof getAuthClient>
 ): Promise<CarPart[]> => {

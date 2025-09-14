@@ -4,7 +4,7 @@ import { authToSession } from "../mappers/auth-mapper";
 import CustomError from "../errors/custom-error";
 
 /**
- * Call the loginRepository and return the user and the session
+ * Login the user
  * @param email - The email of the user
  * @param password - The password of the user
  * @returns The user, and the session
@@ -26,6 +26,10 @@ export const loginService = async (email: string, password: string) => {
   return authToSession(data);
 };
 
+/**
+ * Logout the user
+ * @param supabase - The supabase client
+ */
 export const logoutService = async (
   supabase: ReturnType<typeof getAuthClient>
 ) => {
@@ -40,6 +44,11 @@ export const logoutService = async (
     });
 };
 
+/**
+ * Get the user using the access token
+ * @param accessToken - The access token
+ * @returns The user
+ */
 export const getUserService = async (accessToken: string) => {
   const {
     data: { user },

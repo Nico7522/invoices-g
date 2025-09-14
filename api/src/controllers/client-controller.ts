@@ -5,6 +5,7 @@ import {
   createClientService,
   updateClientService,
   deleteClientService,
+  getClientInvoicesService,
 } from "../services/client-service";
 
 export const getClients = async (req: Request, res: Response) => {
@@ -56,4 +57,12 @@ export const deleteClient = async (req: Request, res: Response) => {
   const { id } = req.params;
   await deleteClientService(id, req.supabase);
   return res.status(200).json({ message: "Client deleted successfully" });
+};
+
+export const getClientInvoices = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const invoices = await getClientInvoicesService(id, req.supabase);
+  return res
+    .status(200)
+    .json({ message: "Invoices fetched successfully", data: invoices });
 };

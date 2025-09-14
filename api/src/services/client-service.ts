@@ -4,6 +4,7 @@ import {
   clientModelToClient,
   clientToClienDto,
 } from "../mappers/client-mapper";
+import { invoiceToInvoiceDto } from "../mappers/invoice-mapper";
 
 import { ClientModel } from "../models/client";
 
@@ -122,4 +123,31 @@ export const deleteClientService = async (
       instance: `/api/clients/${id}`,
       status: 400,
     });
+};
+
+/**
+ * Get invoices of a client
+ * @param id - The id of the client
+ * @param supabase - The supabase client
+ * @returns The invoices of the client
+ */
+export const getClientInvoicesService = async (
+  id: string,
+  supabase: ReturnType<typeof getAuthClient>
+) => {
+  const { data, error } = await supabase
+    .from("invoices")
+    .select("*")
+    .eq("client_id", id);
+
+  if (error)
+    throw new CustomError({
+      type: "about:blank",
+      title: error.name,
+      detail: error.message || "Error fetching invoices",
+      instance: `/api/clients/${id}/invoices`,
+      status: 400,
+    });
+
+  return data.map(invoiceToInvoiceDto);
 };
