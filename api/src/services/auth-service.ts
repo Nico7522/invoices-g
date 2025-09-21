@@ -49,7 +49,10 @@ export const logoutService = async (
  * @param accessToken - The access token
  * @returns The user
  */
-export const getUserService = async (accessToken: string) => {
+export const getUserService = async (
+  supabase: ReturnType<typeof getAuthClient>,
+  accessToken: string
+) => {
   const {
     data: { user },
     error,

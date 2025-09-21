@@ -12,6 +12,6 @@ AuthRouter.post("/login", login);
 AuthRouter.post("/logout", authenticateUser, logout);
 
 // Get the authenticated user
-AuthRouter.get("/user", getUser);
+AuthRouter.get("/user", authenticateUser, getUser);
 
 export default AuthRouter;

@@ -37,6 +37,6 @@ export const logout = async (req: Request, res: Response) => {
 
 export const getUser = async (req: Request, res: Response) => {
   const accessToken = req.cookies["sb-access-token"];
-  const { id, email } = await getUserService(accessToken);
+  const { id, email } = await getUserService(req.supabase, accessToken);
   return res.status(200).json({ user: { id, email } });
 };
