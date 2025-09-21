@@ -8,10 +8,7 @@ import { InvoiceService } from '../services/invoice-service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  InvoiceFormGroup,
-  InvoiceForm as InvoiceFormInterface,
-} from '../models/invoice-form-interface';
+import { InvoiceForm as InvoiceFormInterface } from '../models/invoice-form-interface';
 import { InvoiceDetails } from '../../shared/models/invoice-interface';
 
 @Component({
@@ -29,25 +26,7 @@ export class InvoiceCreate {
   readonly #destroyRef = inject(DestroyRef);
   clients = this.#getClientService.clients;
   carParts = this.#getCarPartsService.carParts;
-  createInvoiceForm = new FormGroup<InvoiceFormInterface>({
-    invoice: new FormGroup<InvoiceFormGroup>({
-      clientId: new FormControl('', { nonNullable: true, validators: Validators.required }),
-      carParts: new FormArray([
-        new FormGroup({
-          partId: new FormControl('', { nonNullable: true, validators: Validators.required }),
-          quantity: new FormControl(0, {
-            nonNullable: true,
-            validators: [Validators.required, Validators.min(1)],
-          }),
-        }),
-      ]),
-      laborCostExclTax: new FormControl(0, {
-        nonNullable: true,
-        validators: [Validators.required, Validators.min(1)],
-      }),
-      otherFeesExclTax: new FormControl(0),
-    }),
-  });
+  createInvoiceForm = new FormGroup({} as InvoiceFormInterface);
 
   onSubmit() {
     this.#invoiceService

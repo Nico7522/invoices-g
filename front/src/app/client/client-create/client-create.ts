@@ -7,6 +7,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Client } from '../../shared/models/client-interfaces';
 import { MessageService } from 'primeng/api';
 import { Router, RouterModule } from '@angular/router';
+import {
+  ClientFormGroup,
+  ClientForm as ClientFormInterface,
+} from '../models/client-form-interface';
 
 @Component({
   selector: 'app-client-create',
@@ -19,7 +23,7 @@ export class ClientCreate {
   readonly #destroyRef = inject(DestroyRef);
   readonly #messageService = inject(MessageService);
   readonly #router = inject(Router);
-  readonly createClientForm = new FormGroup({});
+  readonly createClientForm = new FormGroup({} as ClientFormInterface);
   loading = signal(false);
   onSubmit() {
     if (this.createClientForm.valid) {

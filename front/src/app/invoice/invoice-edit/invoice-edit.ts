@@ -5,10 +5,7 @@ import { GetClientService } from '../../shared/services/client/get-client-servic
 import { GetCarPartsService } from '../../shared/services/car-part/get-car-parts-service';
 import { ButtonModule } from 'primeng/button';
 import { InvoiceService } from '../services/invoice-service';
-import {
-  InvoiceFormGroup,
-  InvoiceForm as InvoiceFormInterface,
-} from '../models/invoice-form-interface';
+import { InvoiceForm as InvoiceFormInterface } from '../models/invoice-form-interface';
 import { InvoiceDetails } from '../../shared/models/invoice-interface';
 import { take } from 'rxjs';
 import { MessageService } from 'primeng/api';
@@ -32,25 +29,7 @@ export class InvoiceEdit {
   clients = this.#getClientService.clients;
   carParts = this.#carPartsService.carParts;
   initialized = signal(false);
-  editInvoiceForm = new FormGroup<InvoiceFormInterface>({
-    invoice: new FormGroup<InvoiceFormGroup>({
-      clientId: new FormControl('', { nonNullable: true, validators: Validators.required }),
-      carParts: new FormArray([
-        new FormGroup({
-          partId: new FormControl('', { nonNullable: true, validators: Validators.required }),
-          quantity: new FormControl(0, {
-            nonNullable: true,
-            validators: [Validators.required, Validators.min(1)],
-          }),
-        }),
-      ]),
-      laborCostExclTax: new FormControl(0, {
-        nonNullable: true,
-        validators: [Validators.required, Validators.min(1)],
-      }),
-      otherFeesExclTax: new FormControl(0),
-    }),
-  });
+  editInvoiceForm = new FormGroup({} as InvoiceFormInterface);
 
   onSubmit() {
     if (this.editInvoiceForm.valid) {

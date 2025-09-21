@@ -28,17 +28,7 @@ export class ClientEdit {
   readonly #title = inject(Title);
   id = input.required<string>();
   client = this.#clientService.getClient(this.id);
-  clientEditForm = new FormGroup<ClientFormInterface>({
-    client: new FormGroup<ClientFormGroup>({
-      name: new FormControl('', { nonNullable: true, validators: Validators.required }),
-      surname: new FormControl('', { nonNullable: true, validators: Validators.required }),
-      email: new FormControl('', {
-        nonNullable: true,
-        validators: [Validators.required, Validators.email],
-      }),
-      phoneNumber: new FormControl(0, { nonNullable: true, validators: Validators.required }),
-    }),
-  });
+  clientEditForm = new FormGroup({} as ClientFormInterface);
   loading = signal(false);
   onSubmit() {
     if (this.clientEditForm.valid) {
